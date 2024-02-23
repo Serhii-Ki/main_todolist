@@ -9,5 +9,8 @@ ul {
 }
 
 button {
+	border: none;
+	background: none;
+	text-decoration: none;
 	cursor: pointer;
 }

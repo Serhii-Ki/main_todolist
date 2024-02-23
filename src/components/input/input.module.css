@@ -1,0 +1,19 @@
+.inputMain[type='text'] {
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	transition: border-color 0.3s ease;
+	font-size: 16px;
+}
+
+.inputMain[type='text']:focus {
+	border-color: #131958;
+	outline: none;
+}
+
+.inputMain[type='text']:focus {
+	border-color: #131958;
+	box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+	outline: none;
+}

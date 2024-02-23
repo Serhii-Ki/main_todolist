@@ -36,7 +36,7 @@ function EditSpan(props: EditSpanPropsType) {
 					<Input
 						autoFocus={true}
 						onBlur={showSpan}
-						text={''}
+						value={''}
 						onChange={onChangeHandler}
 					/>
 					<Button title='change' onClick={editTask} />

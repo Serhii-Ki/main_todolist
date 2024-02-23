@@ -1,0 +1,6 @@
+.listElem {
+	display: flex;
+	column-gap: 5px;
+	align-items: center;
+	margin-top: 4px;
+}

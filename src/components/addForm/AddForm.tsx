@@ -1,25 +1,32 @@
+import { ChangeEvent, useState } from 'react';
 import Button from '../button/Button';
 import Input from '../input/Input';
 
+import styles from './addForm.module.css';
+
 type AddFormPropsType = {
-	inputText: string;
 	buttonTitle: string;
-	onChange: () => void;
-	addTask: () => void;
+	addTask: (inputValue: string) => void;
 };
 
 function AddForm(props: AddFormPropsType) {
-	const onChangeHandler = () => {
-		props.onChange();
+	const [inputValue, setInputValue] = useState<string>('');
+
+	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+		setInputValue(e.currentTarget.value);
 	};
 
 	const onClickHandler = () => {
-		props.addTask();
+		if (inputValue) {
+			props.addTask(inputValue);
+		} else {
+			return;
+		}
 	};
 
 	return (
-		<div>
-			<Input text={props.inputText} onChange={onChangeHandler} />
+		<div className={styles.wrapper}>
+			<Input value={inputValue} onChange={onChangeHandler} />
 			<Button title={props.buttonTitle} onClick={onClickHandler} />
 		</div>
 	);
