@@ -140,6 +140,13 @@ function MainApp() {
 		);
 	};
 
+	const editTodoList = (title: string, todoListId: string) => {
+		const newTitleTodoList = todoLists.map(list =>
+			list.id === todoListId ? { ...list, title: title } : list
+		);
+		setTodoLists(prevState => [...newTitleTodoList]);
+	};
+
 	const editTask = (title: string, todoListId: string, taskId: string) => {
 		const newTitleTask = tasks[todoListId].map(task =>
 			task.id === taskId ? { ...task, title: title } : task
@@ -170,6 +177,7 @@ function MainApp() {
 							onChangeChecked={onChangeChecked}
 							onChangeFilter={onChangeFilter}
 							deleteTodoList={deleteTodoList}
+							editTodoList={editTodoList}
 							editTask={editTask}
 						/>
 					);

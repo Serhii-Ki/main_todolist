@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { TasksType } from '../../pages/mainApp/MainApp';
 import AddForm from '../addForm/AddForm';
 import Button from '../button/Button';
@@ -16,10 +17,13 @@ type TodoListProps = {
 	onChangeFilter: (todoListId: string, newFilter: string) => void;
 	deleteTask: (todoListId: string, taskId: string) => void;
 	deleteTodoList: (todoListId: string) => void;
+	editTodoList: (title: string, todoListId: string) => void;
 	editTask: (title: string, todoListId: string, taskId: string) => void;
 };
 
 function TodoList(props: TodoListProps) {
+	const [isEdit, setEdit] = useState(false);
+
 	const renderTaskElem = (): TasksType[] => {
 		if (props.filter === 'active') {
 			return props.tasks.filter(task => !task.isDone);
@@ -50,14 +54,27 @@ function TodoList(props: TodoListProps) {
 		props.onChangeFilter(props.todoListId, filter);
 	};
 
+	const onEditHandler = () => {
+		setEdit(prevState => !prevState);
+	};
+
+	const editTodoList = (title: string) => {
+		props.editTodoList(title, props.todoListId);
+	};
+
 	const editTask = (title: string, taskId: string) => {
 		props.editTask(title, props.todoListId, taskId);
 	};
 
 	return (
 		<div>
-			<EditSpan title={props.title} />
-			<Button title='Х' onClick={deleteTodoList} />
+			<EditSpan
+				title={props.title}
+				isEdit={isEdit}
+				onEditHandler={onEditHandler}
+				editItem={editTodoList}
+			/>
+			{!isEdit && <Button title='Х' onClick={deleteTodoList} />}
 			<AddForm buttonTitle='add' addItem={addTask} />
 			<div className={styles.btnWrapper}>
 				<Button

@@ -4,45 +4,54 @@ import Input from '../input/Input';
 
 type EditSpanPropsType = {
 	title: string;
-	editItem?: (title: string) => void;
+	isEdit: boolean;
+	editItem: (title: string) => void;
+	onEditHandler: () => void;
 };
 
-type ShowElemType = 'span' | 'input';
-
 function EditSpan(props: EditSpanPropsType) {
-	const [viewElem, setViewElem] = useState<ShowElemType>('span');
-	const [inputValue, setInputValue] = useState<string>('');
+	const [inputValue, setInputValue] = useState<string>(props.title);
 
-	const showInput = () => {
-		setViewElem('input');
-	};
-
-	const showSpan = () => {
-		setViewElem('span');
+	const toggleEditView = () => {
+		props.onEditHandler && props.onEditHandler();
 	};
 
 	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		setInputValue(e.currentTarget.value);
 	};
 
+	const onBlurHandler = () => {
+		toggleEditView();
+	};
+
 	const editTask = () => {
-		props.editItem && props.editItem(inputValue);
-		showSpan();
+		if (inputValue.trim()) {
+			props.editItem && props.editItem(inputValue);
+			toggleEditView();
+		} else {
+			return;
+		}
+	};
+
+	const cancelEdit = () => {
+		toggleEditView();
+		setInputValue(props.title);
 	};
 
 	return (
 		<>
-			{viewElem === 'span' ? (
-				<span onDoubleClick={showInput}>{props.title}</span>
+			{!props.isEdit ? (
+				<span onDoubleClick={toggleEditView}>{props.title}</span>
 			) : (
 				<>
 					<Input
 						autoFocus={true}
-						// onBlur={showSpan}
+						// onBlur={onBlurHandler}
 						value={inputValue}
 						onChange={onChangeHandler}
 					/>
 					<Button title='change' onClick={editTask} />
+					<Button title='cancel' onClick={cancelEdit} />
 				</>
 			)}
 		</>
