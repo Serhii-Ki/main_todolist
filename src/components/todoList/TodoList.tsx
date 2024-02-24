@@ -11,10 +11,12 @@ type TodoListProps = {
 	filter: string;
 	tasks: TasksType[];
 	todoListId: string;
-	deleteTask: (todoListId: string, taskId: string) => void;
 	addTask: (id: string, title: string) => void;
 	onChangeChecked: (todoListId: string, taskId: string) => void;
 	onChangeFilter: (todoListId: string, newFilter: string) => void;
+	deleteTask: (todoListId: string, taskId: string) => void;
+	deleteTodoList: (todoListId: string) => void;
+	editTask: (title: string, todoListId: string, taskId: string) => void;
 };
 
 function TodoList(props: TodoListProps) {
@@ -36,8 +38,8 @@ function TodoList(props: TodoListProps) {
 		props.deleteTask(props.todoListId, taskId);
 	};
 
-	const deletTodoList = () => {
-		console.log('delete');
+	const deleteTodoList = () => {
+		props.deleteTodoList(props.todoListId);
 	};
 
 	const onChangeChecked = (taskId: string) => {
@@ -48,11 +50,15 @@ function TodoList(props: TodoListProps) {
 		props.onChangeFilter(props.todoListId, filter);
 	};
 
+	const editTask = (title: string, taskId: string) => {
+		props.editTask(title, props.todoListId, taskId);
+	};
+
 	return (
 		<div>
 			<EditSpan title={props.title} />
-			<Button title='Х' onClick={deletTodoList} />
-			<AddForm buttonTitle='add' addTask={addTask} />
+			<Button title='Х' onClick={deleteTodoList} />
+			<AddForm buttonTitle='add' addItem={addTask} />
 			<div className={styles.btnWrapper}>
 				<Button
 					// activeClass={props.filter === 'all' ? 'active' : ''}
@@ -72,6 +78,7 @@ function TodoList(props: TodoListProps) {
 							isDone={task.isDone}
 							deleteTask={deleteTask}
 							onChangeChecked={onChangeChecked}
+							editTask={editTask}
 						/>
 					);
 				})}

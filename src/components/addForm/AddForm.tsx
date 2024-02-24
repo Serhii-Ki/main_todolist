@@ -6,7 +6,7 @@ import styles from './addForm.module.css';
 
 type AddFormPropsType = {
 	buttonTitle: string;
-	addTask: (inputValue: string) => void;
+	addItem: (inputValue: string) => void;
 };
 
 function AddForm(props: AddFormPropsType) {
@@ -17,8 +17,9 @@ function AddForm(props: AddFormPropsType) {
 	};
 
 	const onClickHandler = () => {
-		if (inputValue) {
-			props.addTask(inputValue);
+		if (inputValue.trim()) {
+			props.addItem(inputValue);
+			setInputValue('');
 		} else {
 			return;
 		}

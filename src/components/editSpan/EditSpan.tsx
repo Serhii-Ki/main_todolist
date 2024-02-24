@@ -1,15 +1,17 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import Button from '../button/Button';
 import Input from '../input/Input';
 
 type EditSpanPropsType = {
 	title: string;
+	editItem?: (title: string) => void;
 };
 
 type ShowElemType = 'span' | 'input';
 
 function EditSpan(props: EditSpanPropsType) {
 	const [viewElem, setViewElem] = useState<ShowElemType>('span');
+	const [inputValue, setInputValue] = useState<string>('');
 
 	const showInput = () => {
 		setViewElem('input');
@@ -19,12 +21,13 @@ function EditSpan(props: EditSpanPropsType) {
 		setViewElem('span');
 	};
 
-	const onChangeHandler = () => {
-		console.log('change');
+	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+		setInputValue(e.currentTarget.value);
 	};
 
 	const editTask = () => {
-		console.log('edittask');
+		props.editItem && props.editItem(inputValue);
+		showSpan();
 	};
 
 	return (
@@ -35,8 +38,8 @@ function EditSpan(props: EditSpanPropsType) {
 				<>
 					<Input
 						autoFocus={true}
-						onBlur={showSpan}
-						value={''}
+						// onBlur={showSpan}
+						value={inputValue}
 						onChange={onChangeHandler}
 					/>
 					<Button title='change' onClick={editTask} />

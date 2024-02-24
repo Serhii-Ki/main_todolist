@@ -101,7 +101,13 @@ function MainApp() {
 	};
 
 	const addTodoList = (title: string) => {
-		console.log(title);
+		const newTodoList: TodoListType = {
+			id: generateUniqueId(),
+			title: title,
+			filter: 'all',
+		};
+		setTodoLists([...todoLists, newTodoList]);
+		setTasks(prevState => ({ ...prevState, [newTodoList.id]: [] }));
 	};
 
 	const deleteTask = (todoListId: string, taskId: string) => {
@@ -111,6 +117,10 @@ function MainApp() {
 				task => task.id !== taskId
 			),
 		}));
+	};
+
+	const deleteTodoList = (todoListId: string) => {
+		setTodoLists(prevState => prevState.filter(list => list.id !== todoListId));
 	};
 
 	const onChangeChecked = (todoListId: string, taskId: string) => {
@@ -130,11 +140,21 @@ function MainApp() {
 		);
 	};
 
+	const editTask = (title: string, todoListId: string, taskId: string) => {
+		const newTitleTask = tasks[todoListId].map(task =>
+			task.id === taskId ? { ...task, title: title } : task
+		);
+		setTasks(prevState => ({
+			...tasks,
+			[todoListId]: [...newTitleTask],
+		}));
+	};
+
 	return (
 		<>
 			<div className={styles.addList}>
 				<h3>Add new todoList</h3>
-				<AddForm buttonTitle='add' addTask={addTodoList} />
+				<AddForm buttonTitle='add' addItem={addTodoList} />
 			</div>
 			<div className={styles.wrapper}>
 				{todoLists.map(item => {
@@ -149,6 +169,8 @@ function MainApp() {
 							addTask={addTask}
 							onChangeChecked={onChangeChecked}
 							onChangeFilter={onChangeFilter}
+							deleteTodoList={deleteTodoList}
+							editTask={editTask}
 						/>
 					);
 				})}

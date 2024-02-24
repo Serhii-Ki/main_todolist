@@ -9,6 +9,7 @@ type TaskPropsType = {
 	isDone: boolean;
 	deleteTask: (taskId: string) => void;
 	onChangeChecked: (taskId: string) => void;
+	editTask: (title: string, taskId: string) => void;
 };
 function Task(props: TaskPropsType) {
 	const deleteTask = () => {
@@ -18,6 +19,10 @@ function Task(props: TaskPropsType) {
 	const onChangeChecked = () => {
 		props.onChangeChecked(props.taskId);
 	};
+
+	const editTask = (title: string) => {
+		props.editTask(title, props.taskId);
+	};
 	return (
 		<li className={styles.listElem}>
 			<input
@@ -25,7 +30,7 @@ function Task(props: TaskPropsType) {
 				checked={props.isDone}
 				onChange={onChangeChecked}
 			/>
-			<EditSpan title={props.title} />
+			<EditSpan title={props.title} editItem={editTask} />
 			<Button title='X' onClick={deleteTask} />
 		</li>
 	);
