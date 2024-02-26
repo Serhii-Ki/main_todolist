@@ -8,3 +8,8 @@
 .error {
 	border: 1px solid red;
 }
+
+.error-text {
+	margin-top: 5px;
+	color: red;
+}

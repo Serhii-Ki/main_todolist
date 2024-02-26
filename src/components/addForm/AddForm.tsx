@@ -11,9 +11,11 @@ type AddFormPropsType = {
 
 function AddForm(props: AddFormPropsType) {
 	const [inputValue, setInputValue] = useState<string>('');
+	const [isErrorAddTask, setErrorAddTask] = useState<boolean>(false);
 
 	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
 		setInputValue(e.currentTarget.value);
+		setErrorAddTask(false);
 	};
 
 	const onClickHandler = () => {
@@ -21,15 +23,23 @@ function AddForm(props: AddFormPropsType) {
 			props.addItem(inputValue);
 			setInputValue('');
 		} else {
+			setErrorAddTask(true);
 			return;
 		}
 	};
 
 	return (
-		<div className={styles.wrapper}>
-			<Input value={inputValue} onChange={onChangeHandler} />
-			<Button title={props.buttonTitle} onClick={onClickHandler} />
-		</div>
+		<>
+			<div className={styles.wrapper}>
+				<Input
+					value={inputValue}
+					onChange={onChangeHandler}
+					isError={isErrorAddTask}
+				/>
+				<Button title={props.buttonTitle} onClick={onClickHandler} />
+			</div>
+			{isErrorAddTask && <p className={styles['error-text']}>Error!!!</p>}
+		</>
 	);
 }
 

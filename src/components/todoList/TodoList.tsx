@@ -78,12 +78,20 @@ function TodoList(props: TodoListProps) {
 			<AddForm buttonTitle='add' addItem={addTask} />
 			<div className={styles.btnWrapper}>
 				<Button
-					// activeClass={props.filter === 'all' ? 'active' : ''}
 					title='all'
+					isActive={props.filter === 'all'}
 					onClick={() => changeFilter('all')}
 				/>
-				<Button title='active' onClick={() => changeFilter('active')} />
-				<Button title='completed' onClick={() => changeFilter('completed')} />
+				<Button
+					title='active'
+					isActive={props.filter === 'active'}
+					onClick={() => changeFilter('active')}
+				/>
+				<Button
+					title='completed'
+					isActive={props.filter === 'completed'}
+					onClick={() => changeFilter('completed')}
+				/>
 			</div>
 			<ul>
 				{renderTaskElem().map(task => {

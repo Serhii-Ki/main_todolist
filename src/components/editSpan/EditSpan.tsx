@@ -1,10 +1,14 @@
+import cn from 'classnames';
 import { ChangeEvent, useState } from 'react';
+
 import Button from '../button/Button';
 import Input from '../input/Input';
+import styles from './editSpan.module.css';
 
 type EditSpanPropsType = {
 	title: string;
 	isEdit: boolean;
+	isDone?: boolean;
 	editItem: (title: string) => void;
 	onEditHandler: () => void;
 };
@@ -26,7 +30,7 @@ function EditSpan(props: EditSpanPropsType) {
 
 	const editTask = () => {
 		if (inputValue.trim()) {
-			props.editItem && props.editItem(inputValue);
+			props.editItem(inputValue);
 			toggleEditView();
 		} else {
 			return;
@@ -41,12 +45,18 @@ function EditSpan(props: EditSpanPropsType) {
 	return (
 		<>
 			{!props.isEdit ? (
-				<span onDoubleClick={toggleEditView}>{props.title}</span>
+				<span
+					className={cn({
+						[styles.done]: props.isDone,
+					})}
+					onDoubleClick={toggleEditView}
+				>
+					{props.title}
+				</span>
 			) : (
 				<>
 					<Input
 						autoFocus={true}
-						// onBlur={onBlurHandler}
 						value={inputValue}
 						onChange={onChangeHandler}
 					/>

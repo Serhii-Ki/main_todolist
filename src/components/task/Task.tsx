@@ -40,6 +40,7 @@ function Task(props: TaskPropsType) {
 				title={props.title}
 				editItem={editTask}
 				isEdit={isEdit}
+				isDone={props.isDone}
 				onEditHandler={onEditHandler}
 			/>
 			{!isEdit && <Button title='X' onClick={deleteTask} />}
