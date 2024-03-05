@@ -31,7 +31,7 @@ function TodoList(props: TodoListProps) {
 		if (props.filter === 'completed') {
 			return props.tasks.filter(task => task.isDone);
 		}
-		return props.tasks;
+		return props.tasks.sort((a, b) => +a.isDone - +b.isDone);
 	};
 
 	const addTask = (inputValue: string) => {

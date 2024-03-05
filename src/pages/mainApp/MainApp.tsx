@@ -9,6 +9,7 @@ export type TodoListType = {
 	id: string;
 	title: string;
 	filter: string;
+	tasks: TasksType[];
 };
 
 export type TasksType = {
@@ -17,87 +18,77 @@ export type TasksType = {
 	isDone: boolean;
 };
 
-export type TasksObjType = {
-	[key: string]: TasksType[];
-};
-
 function MainApp() {
-	const firstId = generateUniqueId();
-	const secondId = generateUniqueId();
-
 	const todoListsVar: TodoListType[] = [
 		{
-			id: firstId,
+			id: generateUniqueId(),
 			title: 'What to learn',
 			filter: 'all',
+			tasks: [
+				{
+					id: generateUniqueId(),
+					title: 'HTML',
+					isDone: false,
+				},
+				{
+					id: generateUniqueId(),
+					title: 'CSS',
+					isDone: false,
+				},
+				{
+					id: generateUniqueId(),
+					title: 'JavaScript',
+					isDone: false,
+				},
+				{
+					id: generateUniqueId(),
+					title: 'React',
+					isDone: true,
+				},
+				{
+					id: generateUniqueId(),
+					title: 'Typescript',
+					isDone: true,
+				},
+			],
 		},
 		{
-			id: secondId,
+			id: generateUniqueId(),
 			title: 'What to buy',
 			filter: 'all',
+			tasks: [
+				{
+					id: generateUniqueId(),
+					title: 'Banana',
+					isDone: false,
+				},
+				{
+					id: generateUniqueId(),
+					title: 'Milk',
+					isDone: true,
+				},
+				{
+					id: generateUniqueId(),
+					title: 'Beer',
+					isDone: false,
+				},
+			],
 		},
 	];
 
-	const tasksObj: TasksObjType = {
-		[firstId]: [
-			{
-				id: generateUniqueId(),
-				title: 'HTML',
-				isDone: false,
-			},
-			{
-				id: generateUniqueId(),
-				title: 'CSS',
-				isDone: false,
-			},
-			{
-				id: generateUniqueId(),
-				title: 'JavaScript',
-				isDone: false,
-			},
-			{
-				id: generateUniqueId(),
-				title: 'React',
-				isDone: true,
-			},
-			{
-				id: generateUniqueId(),
-				title: 'Typescript',
-				isDone: true,
-			},
-		],
-		[secondId]: [
-			{
-				id: generateUniqueId(),
-				title: 'Banana',
-				isDone: false,
-			},
-			{
-				id: generateUniqueId(),
-				title: 'Milk',
-				isDone: true,
-			},
-			{
-				id: generateUniqueId(),
-				title: 'Beer',
-				isDone: false,
-			},
-		],
-	};
-
 	const [todoLists, setTodoLists] = useState<TodoListType[]>(todoListsVar);
-	const [tasks, setTasks] = useState<TasksObjType>(tasksObj);
 
 	const addTask = (id: string, title: string) => {
-		const newTasks: TasksType = {
+		const newTask: TasksType = {
 			id: generateUniqueId(),
 			title: title,
 			isDone: false,
 		};
-		setTasks(prevTasksState => ({
-			...prevTasksState,
-			[id]: [...prevTasksState[id], newTasks],
-		}));
+		setTodoLists(
+			todoLists.map(el =>
+				el.id === id ? { ...el, tasks: [...el.tasks, newTask] } : el
+			)
+		);
 	};
 
 	const addTodoList = (title: string) => {
@@ -105,18 +96,13 @@ function MainApp() {
 			id: generateUniqueId(),
 			title: title,
 			filter: 'all',
+			tasks: [],
 		};
 		setTodoLists([...todoLists, newTodoList]);
-		setTasks(prevState => ({ ...prevState, [newTodoList.id]: [] }));
 	};
 
-	const deleteTask = (todoListId: string, taskId: string) => {
-		setTasks(prevTasksState => ({
-			...prevTasksState,
-			[todoListId]: prevTasksState[todoListId].filter(
-				task => task.id !== taskId
-			),
-		}));
+	const deleteTask = (taskId: string) => {
+		setTodoLists(todoLists.filter(el => el.id !== taskId));
 	};
 
 	const deleteTodoList = (todoListId: string) => {
@@ -124,12 +110,18 @@ function MainApp() {
 	};
 
 	const onChangeChecked = (todoListId: string, taskId: string) => {
-		setTasks(prevTasksState => ({
-			...prevTasksState,
-			[todoListId]: prevTasksState[todoListId].map(task =>
-				task.id === taskId ? { ...task, isDone: !task.isDone } : task
-			),
-		}));
+		setTodoLists(
+			todoLists.map(el =>
+				el.id === todoListId
+					? {
+							...el,
+							tasks: el.tasks.map(el =>
+								el.id === taskId ? { ...el, isDone: !el.isDone } : el
+							),
+					  }
+					: el
+			)
+		);
 	};
 
 	const onChangeFilter = (todoListId: string, newFilter: string) => {
@@ -144,17 +136,22 @@ function MainApp() {
 		const newTitleTodoList = todoLists.map(list =>
 			list.id === todoListId ? { ...list, title: title } : list
 		);
-		setTodoLists(prevState => [...newTitleTodoList]);
+		setTodoLists([...newTitleTodoList]);
 	};
 
 	const editTask = (title: string, todoListId: string, taskId: string) => {
-		const newTitleTask = tasks[todoListId].map(task =>
-			task.id === taskId ? { ...task, title: title } : task
+		setTodoLists(
+			todoLists.map(el =>
+				el.id === todoListId
+					? {
+							...el,
+							tasks: el.tasks.map(el =>
+								el.id === taskId ? { ...el, title: title } : el
+							),
+					  }
+					: el
+			)
 		);
-		setTasks(prevState => ({
-			...tasks,
-			[todoListId]: [...newTitleTask],
-		}));
 	};
 
 	return (
@@ -170,7 +167,7 @@ function MainApp() {
 							key={item.id}
 							title={item.title}
 							filter={item.filter}
-							tasks={tasks[item.id]}
+							tasks={item.tasks}
 							todoListId={item.id}
 							deleteTask={deleteTask}
 							addTask={addTask}
