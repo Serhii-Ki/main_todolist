@@ -101,8 +101,14 @@ function MainApp() {
 		setTodoLists([...todoLists, newTodoList]);
 	};
 
-	const deleteTask = (taskId: string) => {
-		setTodoLists(todoLists.filter(el => el.id !== taskId));
+	const deleteTask = (taskId: string, todoListId: string) => {
+		setTodoLists(
+			todoLists.map(el =>
+				el.id === todoListId
+					? { ...el, tasks: el.tasks.filter(task => task.id !== taskId) }
+					: el
+			)
+		);
 	};
 
 	const deleteTodoList = (todoListId: string) => {

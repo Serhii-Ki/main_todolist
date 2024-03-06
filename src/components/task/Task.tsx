@@ -15,6 +15,7 @@ type TaskPropsType = {
 function Task(props: TaskPropsType) {
 	const [isEdit, setEdit] = useState(false);
 	const deleteTask = () => {
+		console.log('delete');
 		props.deleteTask(props.taskId);
 	};
 

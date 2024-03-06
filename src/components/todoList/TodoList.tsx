@@ -39,7 +39,7 @@ function TodoList(props: TodoListProps) {
 	};
 
 	const deleteTask = (taskId: string) => {
-		props.deleteTask(props.todoListId, taskId);
+		props.deleteTask(taskId, props.todoListId);
 	};
 
 	const deleteTodoList = () => {
