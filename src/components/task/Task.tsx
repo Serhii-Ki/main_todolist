@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Button from '../button/Button';
+import CustomBtn from '../customBtn/CustomBtn';
 import EditSpan from '../editSpan/EditSpan';
 
 import styles from './task.module.css';
@@ -32,19 +32,19 @@ function Task(props: TaskPropsType) {
 	};
 	return (
 		<li className={styles.listElem}>
-			<input
-				type='checkbox'
-				checked={props.isDone}
-				onChange={onChangeChecked}
-			/>
+			{!isEdit && <input
+					type='checkbox'
+					checked={props.isDone}
+					onChange={onChangeChecked}
+			/>}
 			<EditSpan
-				title={props.title}
-				editItem={editTask}
-				isEdit={isEdit}
-				isDone={props.isDone}
+					title={props.title}
+					editItem={editTask}
+					isEdit={isEdit}
+					isDone={props.isDone}
 				onEditHandler={onEditHandler}
 			/>
-			{!isEdit && <Button title='X' onClick={deleteTask} />}
+			{!isEdit && <CustomBtn title='X' onClick={deleteTask} />}
 		</li>
 	);
 }

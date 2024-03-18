@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import Button from '../button/Button';
+import CustomBtn from '../customBtn/CustomBtn';
 import Input from '../input/Input';
 
 import styles from './addForm.module.css';
@@ -36,7 +36,7 @@ function AddForm(props: AddFormPropsType) {
 					onChange={onChangeHandler}
 					isError={isErrorAddTask}
 				/>
-				<Button title={props.buttonTitle} onClick={onClickHandler} />
+				<CustomBtn title={props.buttonTitle} onClick={onClickHandler} />
 			</div>
 			{isErrorAddTask && <p className={styles['error-text']}>Error!!!</p>}
 		</>

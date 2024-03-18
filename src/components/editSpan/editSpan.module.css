@@ -3,6 +3,10 @@
 	font-weight: 700;
 }
 
+.span {
+	cursor: pointer;
+}
+
 .done {
 	opacity: 0.6;
 	text-decoration: line-through;

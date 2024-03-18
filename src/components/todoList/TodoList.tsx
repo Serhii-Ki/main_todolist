@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { TasksType } from '../../pages/mainApp/MainApp';
 import AddForm from '../addForm/AddForm';
-import Button from '../button/Button';
+import CustomBtn from '../customBtn/CustomBtn';
 import EditSpan from '../editSpan/EditSpan';
 import Task from '../task/Task';
 
@@ -74,22 +74,22 @@ function TodoList(props: TodoListProps) {
 				onEditHandler={onEditHandler}
 				editItem={editTodoList}
 			/>
-			{!isEdit && <Button title='Х' onClick={deleteTodoList} />}
+			{!isEdit && <CustomBtn title='Х' onClick={deleteTodoList} />}
 			<AddForm buttonTitle='add' addItem={addTask} />
 			<div className={styles.btnWrapper}>
-				<Button
+				<CustomBtn
 					title='all'
-					isActive={props.filter === 'all'}
+					variant='contained'
 					onClick={() => changeFilter('all')}
 				/>
-				<Button
+				<CustomBtn
 					title='active'
-					isActive={props.filter === 'active'}
+					variant='contained'
 					onClick={() => changeFilter('active')}
 				/>
-				<Button
+				<CustomBtn
 					title='completed'
-					isActive={props.filter === 'completed'}
+					variant='contained'
 					onClick={() => changeFilter('completed')}
 				/>
 			</div>

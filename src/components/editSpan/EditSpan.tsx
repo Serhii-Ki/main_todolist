@@ -1,7 +1,8 @@
 import cn from 'classnames';
 import { ChangeEvent, useState } from 'react';
+import EditIcon from '@mui/icons-material/Edit';
 
-import Button from '../button/Button';
+import CustomBtn from '../customBtn/CustomBtn';
 import Input from '../input/Input';
 import styles from './editSpan.module.css';
 
@@ -45,23 +46,26 @@ function EditSpan(props: EditSpanPropsType) {
 	return (
 		<>
 			{!props.isEdit ? (
-				<span
-					className={cn({
-						[styles.done]: props.isDone,
-					})}
-					onDoubleClick={toggleEditView}
-				>
-					{props.title}
-				</span>
+					<>
+						<span
+								className={cn( styles.span, {
+									[styles.done]: props.isDone,
+								})}
+									onDoubleClick={toggleEditView}
+							>
+						{props.title}
+					</span>
+						<CustomBtn startIcon={<EditIcon/>} size='small' title='' onClick={toggleEditView}/>
+					</>
 			) : (
-				<>
-					<Input
-						autoFocus={true}
-						value={inputValue}
-						onChange={onChangeHandler}
-					/>
-					<Button title='change' onClick={editTask} />
-					<Button title='cancel' onClick={cancelEdit} />
+					<>
+						<Input
+								autoFocus={true}
+								value={inputValue}
+								onChange={onChangeHandler}
+						/>
+						<CustomBtn title='change' onClick={editTask} />
+					<CustomBtn title='cancel' onClick={cancelEdit} />
 				</>
 			)}
 		</>
