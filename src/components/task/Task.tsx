@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import CustomBtn from '../customBtn/CustomBtn';
 import EditSpan from '../editSpan/EditSpan';
+import {Paper} from "@mui/material";
 
 import styles from './task.module.css';
 
@@ -31,21 +32,21 @@ function Task(props: TaskPropsType) {
 		setEdit(prevState => !prevState);
 	};
 	return (
-		<li className={styles.listElem}>
-			{!isEdit && <input
-					type='checkbox'
-					checked={props.isDone}
-					onChange={onChangeChecked}
-			/>}
-			<EditSpan
-					title={props.title}
-					editItem={editTask}
-					isEdit={isEdit}
-					isDone={props.isDone}
-				onEditHandler={onEditHandler}
-			/>
-			{!isEdit && <CustomBtn title='X' onClick={deleteTask} />}
-		</li>
+				<li className={styles.listElem}>
+					{!isEdit && <input
+							type='checkbox'
+							checked={props.isDone}
+							onChange={onChangeChecked}
+					/>}
+					<EditSpan
+							title={props.title}
+							editItem={editTask}
+							isEdit={isEdit}
+							isDone={props.isDone}
+							onEditHandler={onEditHandler}
+					/>
+					{!isEdit && <CustomBtn title='X' onClick={deleteTask}/>}
+				</li>
 	);
 }
 

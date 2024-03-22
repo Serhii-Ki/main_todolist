@@ -1,9 +1,11 @@
 import generateUniqueId from 'generate-unique-id';
-import { useState } from 'react';
+import {useReducer, useState} from 'react';
 import TodoList from '../../components/todoList/TodoList';
 
 import AddForm from '../../components/addForm/AddForm';
 import styles from './main.module.css';
+import {initialTodoList, todoListsReducer, TodosType} from "../../components/state/todos-reducer";
+import {initialTasks, tasksReducer} from "../../components/state/tasks-reducer";
 
 export type TodoListType = {
 	id: string;
@@ -77,6 +79,10 @@ function MainApp() {
 	];
 
 	const [todoLists, setTodoLists] = useState<TodoListType[]>(todoListsVar);
+	const [tasks, dispatchTask] = useReducer(tasksReducer, initialTasks);
+	const [todoList, dispatch] = useReducer(todoListsReducer, initialTodoList);
+
+
 
 	const addTask = (id: string, title: string) => {
 		const newTask: TasksType = {
