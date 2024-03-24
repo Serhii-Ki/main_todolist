@@ -8,7 +8,7 @@ type TaskType = {
   isDone: boolean
 };
 
-type TasksType = {
+export type TasksType = {
   [key: string] :TaskType[]
 };
 
@@ -64,10 +64,37 @@ export const tasksReducer = (state: TasksType, actions: ActionsTasksType): Tasks
     case "REMOVE-TASK":{
       return {...state,
         [actions.payload.todoId]:
-            state[actions.payload.taskID].filter(el =>
+            state[actions.payload.todoId].filter(el =>
                 el.id !== actions.payload.taskID
             )
       }
+    }
+
+    case "UPDATE-TASKS": {
+      return {...state, [actions.payload.todoId]: []}
+    }
+
+    case "ADD-TASK": {
+      const newTask = {
+        id: generateUniqueId(),
+        title: actions.payload.title,
+        isDone: false
+      }
+      return {...state, [actions.payload.todoId]: [...state[actions.payload.todoId], newTask]}
+    }
+
+    case "CHANGE-CHECKED": {
+      return {...state, [actions.payload.todoId]: state[actions.payload.todoId].map(task => task.id === actions.payload.taskId
+        ? {...task, isDone: !task.isDone}
+        : task
+        )}
+    }
+
+    case "EDIT-TASK": {
+      return {...state, [actions.payload.todoId]: state[actions.payload.todoId].map(task => task.id === actions.payload.taskId
+          ? {...task, title: actions.payload.title}
+          : task
+        )}
     }
 
     default:

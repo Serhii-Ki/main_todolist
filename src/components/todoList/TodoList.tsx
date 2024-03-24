@@ -1,20 +1,22 @@
 import { useState } from 'react';
-import { TasksType } from '../../pages/mainApp/MainApp';
+import {TasksType} from "../state/tasks-reducer";
 import AddForm from '../addForm/AddForm';
 import CustomBtn from '../customBtn/CustomBtn';
 import EditSpan from '../editSpan/EditSpan';
 import Task from '../task/Task';
 
 import styles from './todoList.module.css';
+import {FilterType} from "../state/todos-reducer";
+
 
 type TodoListProps = {
 	title: string;
 	filter: string;
-	tasks: TasksType[];
+	tasks: TasksType;
 	todoListId: string;
 	addTask: (id: string, title: string) => void;
 	onChangeChecked: (todoListId: string, taskId: string) => void;
-	onChangeFilter: (todoListId: string, newFilter: string) => void;
+	onChangeFilter: (todoListId: string, newFilter: FilterType) => void;
 	deleteTask: (todoListId: string, taskId: string) => void;
 	deleteTodoList: (todoListId: string) => void;
 	editTodoList: (title: string, todoListId: string) => void;
@@ -24,14 +26,16 @@ type TodoListProps = {
 function TodoList(props: TodoListProps) {
 	const [isEdit, setEdit] = useState(false);
 
-	const renderTaskElem = (): TasksType[] => {
-		if (props.filter === 'active') {
-			return props.tasks.filter(task => !task.isDone);
+	const renderTaskElem = () => {
+		if(props.filter === 'completed') {
+			return props.tasks[props.todoListId].filter(task => task.isDone)
 		}
-		if (props.filter === 'completed') {
-			return props.tasks.filter(task => task.isDone);
+
+		if(props.filter === 'active') {
+			return props.tasks[props.todoListId].filter(task => !task.isDone)
 		}
-		return props.tasks.sort((a, b) => +a.isDone - +b.isDone);
+
+		return props.tasks[props.todoListId];
 	};
 
 	const addTask = (inputValue: string) => {
@@ -39,7 +43,7 @@ function TodoList(props: TodoListProps) {
 	};
 
 	const deleteTask = (taskId: string) => {
-		props.deleteTask(taskId, props.todoListId);
+		props.deleteTask(props.todoListId, taskId);
 	};
 
 	const deleteTodoList = () => {
@@ -50,7 +54,7 @@ function TodoList(props: TodoListProps) {
 		props.onChangeChecked(props.todoListId, taskId);
 	};
 
-	const changeFilter = (filter: string) => {
+	const changeFilter = (filter: FilterType) => {
 		props.onChangeFilter(props.todoListId, filter);
 	};
 

@@ -1,169 +1,58 @@
-import generateUniqueId from 'generate-unique-id';
-import {useReducer, useState} from 'react';
+import {useReducer} from 'react';
 import TodoList from '../../components/todoList/TodoList';
-
 import AddForm from '../../components/addForm/AddForm';
-import styles from './main.module.css';
-import {initialTodoList, todoListsReducer, TodosType} from "../../components/state/todos-reducer";
+import {FilterType, initialTodoList, todoListsReducer} from "../../components/state/todos-reducer";
 import {initialTasks, tasksReducer} from "../../components/state/tasks-reducer";
+import {addTodoListAC, changeFilterAC, editTodoAC, removeTodoList} from "../../components/state/actions-todos";
+import {
+	addTaskAC,
+	changeCheckedAC,
+	editTaskAC,
+	removeTaskAC,
+	updateTasksAC
+} from "../../components/state/actions-tasks";
+import generateUniqueId from "generate-unique-id";
 
-export type TodoListType = {
-	id: string;
-	title: string;
-	filter: string;
-	tasks: TasksType[];
-};
-
-export type TasksType = {
-	id: string;
-	title: string;
-	isDone: boolean;
-};
+import styles from './main.module.css';
 
 function MainApp() {
-	const todoListsVar: TodoListType[] = [
-		{
-			id: generateUniqueId(),
-			title: 'What to learn',
-			filter: 'all',
-			tasks: [
-				{
-					id: generateUniqueId(),
-					title: 'HTML',
-					isDone: false,
-				},
-				{
-					id: generateUniqueId(),
-					title: 'CSS',
-					isDone: false,
-				},
-				{
-					id: generateUniqueId(),
-					title: 'JavaScript',
-					isDone: false,
-				},
-				{
-					id: generateUniqueId(),
-					title: 'React',
-					isDone: true,
-				},
-				{
-					id: generateUniqueId(),
-					title: 'Typescript',
-					isDone: true,
-				},
-			],
-		},
-		{
-			id: generateUniqueId(),
-			title: 'What to buy',
-			filter: 'all',
-			tasks: [
-				{
-					id: generateUniqueId(),
-					title: 'Banana',
-					isDone: false,
-				},
-				{
-					id: generateUniqueId(),
-					title: 'Milk',
-					isDone: true,
-				},
-				{
-					id: generateUniqueId(),
-					title: 'Beer',
-					isDone: false,
-				},
-			],
-		},
-	];
-
-	const [todoLists, setTodoLists] = useState<TodoListType[]>(todoListsVar);
+	const [todoLists, dispatchTodos] = useReducer(todoListsReducer, initialTodoList);
 	const [tasks, dispatchTask] = useReducer(tasksReducer, initialTasks);
-	const [todoList, dispatch] = useReducer(todoListsReducer, initialTodoList);
 
+	const deleteTodoList = (todoListId: string) => {
+		dispatchTodos(removeTodoList(todoListId));
+	};
 
-
-	const addTask = (id: string, title: string) => {
-		const newTask: TasksType = {
-			id: generateUniqueId(),
-			title: title,
-			isDone: false,
-		};
-		setTodoLists(
-			todoLists.map(el =>
-				el.id === id ? { ...el, tasks: [...el.tasks, newTask] } : el
-			)
-		);
+	const deleteTask = (todoListId: string, taskId: string) => {
+		dispatchTask(removeTaskAC(todoListId, taskId));
 	};
 
 	const addTodoList = (title: string) => {
-		const newTodoList: TodoListType = {
-			id: generateUniqueId(),
-			title: title,
-			filter: 'all',
-			tasks: [],
-		};
-		setTodoLists([...todoLists, newTodoList]);
+		const newTodoId = generateUniqueId();
+
+		dispatchTodos(addTodoListAC(newTodoId, title));
+		dispatchTask(updateTasksAC(newTodoId));
 	};
 
-	const deleteTask = (taskId: string, todoListId: string) => {
-		setTodoLists(
-			todoLists.map(el =>
-				el.id === todoListId
-					? { ...el, tasks: el.tasks.filter(task => task.id !== taskId) }
-					: el
-			)
-		);
+	const addTask = (id: string, title: string) => {
+		dispatchTask(addTaskAC(id, title));
 	};
 
-	const deleteTodoList = (todoListId: string) => {
-		setTodoLists(prevState => prevState.filter(list => list.id !== todoListId));
-	};
 
 	const onChangeChecked = (todoListId: string, taskId: string) => {
-		setTodoLists(
-			todoLists.map(el =>
-				el.id === todoListId
-					? {
-							...el,
-							tasks: el.tasks.map(el =>
-								el.id === taskId ? { ...el, isDone: !el.isDone } : el
-							),
-					  }
-					: el
-			)
-		);
+		dispatchTask(changeCheckedAC(todoListId, taskId));
 	};
 
-	const onChangeFilter = (todoListId: string, newFilter: string) => {
-		setTodoLists(
-			todoLists.map(list =>
-				list.id === todoListId ? { ...list, filter: newFilter } : list
-			)
-		);
+	const onChangeFilter = (todoListId: string, newFilter: FilterType) => {
+		dispatchTodos(changeFilterAC(todoListId, newFilter));
 	};
 
 	const editTodoList = (title: string, todoListId: string) => {
-		const newTitleTodoList = todoLists.map(list =>
-			list.id === todoListId ? { ...list, title: title } : list
-		);
-		setTodoLists([...newTitleTodoList]);
+		dispatchTodos(editTodoAC(todoListId, title));
 	};
 
 	const editTask = (title: string, todoListId: string, taskId: string) => {
-		setTodoLists(
-			todoLists.map(el =>
-				el.id === todoListId
-					? {
-							...el,
-							tasks: el.tasks.map(el =>
-								el.id === taskId ? { ...el, title: title } : el
-							),
-					  }
-					: el
-			)
-		);
+		dispatchTask(editTaskAC(todoListId, taskId, title));
 	};
 
 	return (
@@ -179,7 +68,7 @@ function MainApp() {
 							key={item.id}
 							title={item.title}
 							filter={item.filter}
-							tasks={item.tasks}
+							tasks={tasks}
 							todoListId={item.id}
 							deleteTask={deleteTask}
 							addTask={addTask}

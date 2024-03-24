@@ -1,7 +1,7 @@
 import generateUniqueId from "generate-unique-id";
 import {ActionsTasksType} from "./actions-todos";
 
-type FilterType = 'all' | 'completed' | 'active';
+export type FilterType = 'all' | 'completed' | 'active';
 
 export type TodosType = {
   id: string,
@@ -32,6 +32,30 @@ export const todoListsReducer = (
   switch (actions.type){
     case 'REMOVE-TODOLIST': {
       return state.filter(el => el.id !== actions.payload.todoId);
+    }
+
+    case "ADD-TODOLIST": {
+      const newTodoList: TodosType = {
+        id: actions.payload.todoId,
+        title: actions.payload.title,
+        filter: 'all'
+      }
+
+      return [...state, newTodoList];
+    }
+
+    case "CHANGE-FILTER": {
+      return state.map(todo => todo.id === actions.payload.todoId
+        ? {...todo, filter: actions.payload.filter}
+        : todo
+      )
+    }
+
+    case "EDIT-TODO": {
+      return state.map(todo => todo.id === actions.payload.todoId
+        ? {...todo, title: actions.payload.title}
+        : todo
+      )
     }
 
     default:
