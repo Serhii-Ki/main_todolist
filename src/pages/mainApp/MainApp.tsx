@@ -1,16 +1,16 @@
 import {useReducer} from 'react';
 import TodoList from '../../components/todoList/TodoList';
 import AddForm from '../../components/addForm/AddForm';
-import {FilterType, initialTodoList, todoListsReducer} from "../../components/state/todos-reducer";
-import {initialTasks, tasksReducer} from "../../components/state/tasks-reducer";
-import {addTodoListAC, changeFilterAC, editTodoAC, removeTodoList} from "../../components/state/actions-todos";
+import {FilterType, initialTodoList, todoListsReducer} from "../../state/todos-reducer";
+import {initialTasks, tasksReducer} from "../../state/tasks-reducer";
+import {addTodoListAC, changeFilterAC, editTodoAC, removeTodoList} from "../../state/actions-todos";
 import {
 	addTaskAC,
 	changeCheckedAC,
 	editTaskAC,
 	removeTaskAC,
 	updateTasksAC
-} from "../../components/state/actions-tasks";
+} from "../../state/actions-tasks";
 import generateUniqueId from "generate-unique-id";
 
 import styles from './main.module.css';

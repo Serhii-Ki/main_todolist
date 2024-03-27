@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import {TasksType} from "../state/tasks-reducer";
+import {TasksType} from "../../state/tasks-reducer";
 import AddForm from '../addForm/AddForm';
 import CustomBtn from '../customBtn/CustomBtn';
 import EditSpan from '../editSpan/EditSpan';
 import Task from '../task/Task';
 
 import styles from './todoList.module.css';
-import {FilterType} from "../state/todos-reducer";
+import {FilterType} from "../../state/todos-reducer";
 
 
 type TodoListProps = {
