@@ -1,7 +1,7 @@
 import TextField, {TextFieldProps} from '@mui/material/TextField';
 
 type InputPropsType = {
-  label: string
+  label?: string
 } & TextFieldProps
 
 function CustomInput(props: InputPropsType) {
