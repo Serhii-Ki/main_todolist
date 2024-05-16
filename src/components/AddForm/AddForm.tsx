@@ -1,15 +1,17 @@
 import CustomInput from "../CustomInput/CustomInput.tsx";
 import CustomBtn from "../CustomBtn/CustomBtn.tsx";
 import Box from '@mui/material/Box';
-import {useState} from "react";
 
 type AddFormPropsType = {
-  title: string;
+  title?: string;
   label: string;
+  inputValue: string;
+  setInputValue: (value: string) => void;
+  addItem: () => void;
 }
 
 function AddForm(props: AddFormPropsType) {
-  const [inputValue, setInputValue] = useState<string>('');
+
 
   return (
       <Box display="flex" flexDirection={'column'} alignItems="center" gap={'15px'} marginTop={'30px'}>
@@ -18,12 +20,12 @@ function AddForm(props: AddFormPropsType) {
           <CustomInput
               label={props.label}
               size={'small'}
-              value={inputValue}
+              value={props.inputValue}
               onChange={(e) => {
-                setInputValue(e.target.value)
+                props.setInputValue(e.target.value)
               }}
           />
-          <CustomBtn title={'+'} size={'small'}/>
+          <CustomBtn title={'+'} size={'small'} onClick={props.addItem}/>
         </Box>
       </Box>
   );

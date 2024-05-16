@@ -1,23 +1,48 @@
 import Container from '@mui/material/Container';
+import Box from "@mui/material/Box";
+import { v4 as uuidv4 } from 'uuid';
 import AddForm from "./components/AddForm/AddForm.tsx";
 import TodoList from "./components/todolist/TodoList.tsx";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store/store.ts";
 import {TodoListType} from "./types/types.ts";
+import {AddTodoAC} from "./store/todolists-actions.ts";
+import {useState} from "react";
+import {AddNewArrayAC} from "./store/tasks-actions.ts";
 
 function App() {
-  const todoLists = useSelector<AppRootStateType, TodoListType[]>(state => state.todoList)
+  const todoLists = useSelector<AppRootStateType, TodoListType[]>(state => state.todoList);
+  const dispatch = useDispatch();
+  const [inputValue, setInputValue] = useState<string>('');
+
+  const addTodoList = () => {
+    if(inputValue) {
+      const todoListId = uuidv4()
+      dispatch(AddTodoAC(todoListId, inputValue));
+      dispatch(AddNewArrayAC(todoListId));
+      setInputValue('');
+    }
+  }
 
   return (
         <Container>
-          <AddForm label='add todo list' title='Add yor todo list'/>
-          {todoLists.map((todoList) =>
-              <TodoList
-                  key={todoList.id}
-                  id={todoList.id}
-                  title={todoList.title}
-              />
-          )}
+          <AddForm
+              label='add todo list'
+              title='Add yor todo list'
+              inputValue={inputValue}
+              setInputValue={setInputValue}
+              addItem={addTodoList}
+          />
+          <Box display='flex' flexWrap='wrap' gap='40px' marginTop='50px'>
+            {todoLists.map((todoList) =>
+                <TodoList
+                    key={todoList.id}
+                    id={todoList.id}
+                    title={todoList.title}
+                    filter={todoList.filter}
+                />
+            )}
+          </Box>
         </Container>
   )
 }

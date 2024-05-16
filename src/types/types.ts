@@ -1,6 +1,6 @@
-type FilterType = "all" | "active" | "completed";
+export type FilterType = "all" | "active" | "completed";
 
-type TaskType = {
+export type TaskType = {
   id: string,
   title: string,
   completed: boolean,
