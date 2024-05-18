@@ -1,4 +1,4 @@
-import {FilterType} from "../types/types.ts";
+import {FilterType} from "../utils/types.ts";
 
 export type ActionsTodoType = AddTodoType | RemoveTodoListType | ChangeFilterType | EditTodoType;
 

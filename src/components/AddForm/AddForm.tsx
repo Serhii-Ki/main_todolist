@@ -1,13 +1,15 @@
 import CustomInput from "../CustomInput/CustomInput.tsx";
 import CustomBtn from "../CustomBtn/CustomBtn.tsx";
 import Box from '@mui/material/Box';
+import {ChangeEvent} from "react";
 
 type AddFormPropsType = {
   title?: string;
   label: string;
   inputValue: string;
-  setInputValue: (value: string) => void;
+  setInputValue: (e: ChangeEvent<HTMLInputElement>) => void;
   addItem: () => void;
+  isErrorText: boolean;
 }
 
 function AddForm(props: AddFormPropsType) {
@@ -20,10 +22,9 @@ function AddForm(props: AddFormPropsType) {
           <CustomInput
               label={props.label}
               size={'small'}
+              error={props.isErrorText}
               value={props.inputValue}
-              onChange={(e) => {
-                props.setInputValue(e.target.value)
-              }}
+              onChange={props.setInputValue}
           />
           <CustomBtn title={'+'} size={'small'} onClick={props.addItem}/>
         </Box>

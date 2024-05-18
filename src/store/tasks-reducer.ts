@@ -1,5 +1,5 @@
-import {TasksType} from "../types/types.ts";
-import {tasksInitial} from "../types/initState.ts";
+import {TasksType} from "../utils/types.ts";
+import {tasksInitial} from "../utils/initState.ts";
 import {ActionsTaskType} from "./tasks-actions.ts";
 
 export function tasksReducer(state: TasksType = tasksInitial, action: ActionsTaskType): TasksType {

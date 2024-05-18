@@ -5,15 +5,16 @@ import AddForm from "./components/AddForm/AddForm.tsx";
 import TodoList from "./components/todolist/TodoList.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store/store.ts";
-import {TodoListType} from "./types/types.ts";
+import {TodoListType} from "./utils/types.ts";
 import {AddTodoAC} from "./store/todolists-actions.ts";
-import {useState} from "react";
+import {ChangeEvent, useState} from "react";
 import {AddNewArrayAC} from "./store/tasks-actions.ts";
 
 function App() {
   const todoLists = useSelector<AppRootStateType, TodoListType[]>(state => state.todoList);
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState<string>('');
+  const [isErrorText, setIsErrorText] = useState<boolean>(false);
 
   const addTodoList = () => {
     if(inputValue) {
@@ -21,7 +22,14 @@ function App() {
       dispatch(AddTodoAC(todoListId, inputValue));
       dispatch(AddNewArrayAC(todoListId));
       setInputValue('');
+    } else {
+      setIsErrorText(true)
     }
+  }
+  
+  const onChangeInputValue = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+    setIsErrorText(false)
   }
 
   return (
@@ -30,8 +38,9 @@ function App() {
               label='add todo list'
               title='Add yor todo list'
               inputValue={inputValue}
-              setInputValue={setInputValue}
+              setInputValue={onChangeInputValue}
               addItem={addTodoList}
+              isErrorText={isErrorText}
           />
           <Box display='flex' flexWrap='wrap' gap='40px' marginTop='50px'>
             {todoLists.map((todoList) =>

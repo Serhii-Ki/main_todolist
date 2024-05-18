@@ -1,5 +1,5 @@
-import {TodoListType} from "../types/types.ts";
-import {todoInitial} from "../types/initState.ts";
+import {TodoListType} from "../utils/types.ts";
+import {todoInitial} from "../utils/initState.ts";
 import {ActionsTodoType} from "./todolists-actions.ts";
 
 export function todolistsReducer(state: TodoListType[] = todoInitial, action: ActionsTodoType): TodoListType[]{

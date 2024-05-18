@@ -3,16 +3,11 @@ import Box from "@mui/material/Box";
 import AddForm from "../AddForm/AddForm.tsx";
 import Task from "../task/Task.tsx";
 import FilterButtons from "../filterButtons/FilterButtons.tsx";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../store/store.ts";
-import {FilterType, TasksType, TaskType} from "../../types/types.ts";
-import {useState} from "react";
-import { v4 as uuidv4 } from 'uuid';
+import {FilterType} from "../../utils/types.ts";
 import EditSpan from "../editSpan/EditSpan.tsx";
 import BtnGroup from "../btnGroup/BtnGroup.tsx";
 import IconsGroup from "../iconsGroup/IconsGroup.tsx";
-import {ChangeFilterAC, EditTodoAC, RemoveTodoAC} from "../../store/todolists-actions.ts";
-import {AddTaskAC} from "../../store/tasks-actions.ts";
+import {useTodoList} from "./hook/useTodoList.ts";
 
 type TodoListType = {
   id: string;
@@ -21,55 +16,22 @@ type TodoListType = {
 }
 
 function TodoList(props: TodoListType) {
-  const tasks = useSelector<AppRootStateType, TasksType>(state => state.task);
-  const dispatch = useDispatch();
-  const [inputValue, setInputValue] = useState<string>('');
-  const [editInputValue, setEditInputValue] = useState<string>(props.title);
-  const [viewMode, setViewMode] = useState<boolean>(false);
-
-  let filterTasks: TaskType[];
-
-  const filterTasksFn = () => {
-    if(props.filter === 'completed'){
-      return filterTasks = tasks[props.id].filter(task => task.completed)
-    } else if(props.filter === 'active') {
-      return filterTasks = tasks[props.id].filter(task => !task.completed)
-    } else {
-      return filterTasks = tasks[props.id];
-    }
-  }
-
-  const setInputMode = () => {
-    setViewMode(true);
-  }
-
-  const setSpanMode = () => {
-    setViewMode(false);
-  }
-
-  const removeTodoList = () => {
-    dispatch(RemoveTodoAC(props.id))
-  }
-
-  const changeFiler = (filter: FilterType) => {
-    dispatch(ChangeFilterAC(props.id, filter));
-  }
-
-  const addTask = () => {
-    const taskId = uuidv4();
-    dispatch(AddTaskAC(props.id, taskId, inputValue));
-    setInputValue('')
-  }
-
-  const editTodo = () => {
-    dispatch(EditTodoAC(props.id, editInputValue))
-    setSpanMode()
-  }
-
-  const cancelEditTodo = () => {
-    setSpanMode();
-    setEditInputValue(props.title)
-  }
+  const {
+    filterTasksFn,
+    viewMode,
+    setInputMode,
+    setSpanMode,
+    inputValue,
+    onChangeInput,
+    removeTodoList,
+    changeFiler,
+    addTask,
+    editInputValue,
+    setEditInputValue,
+    editTodo,
+    cancelEditTodo,
+    isErrorText
+  } = useTodoList(props.id, props.title, props.filter)
 
   return (
       <Paper sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '400px', padding: '20px'}}>
@@ -87,8 +49,9 @@ function TodoList(props: TodoListType) {
         <AddForm
             label='add task'
             inputValue={inputValue}
-            setInputValue={setInputValue}
+            setInputValue={onChangeInput}
             addItem={addTask}
+            isErrorText={isErrorText}
         />
         {filterTasksFn().map((task) =>
             <Task
