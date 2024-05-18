@@ -1,6 +1,6 @@
 import {FilterType} from "../types/types.ts";
 
-export type ActionsTodoType = AddTodoType | RemoveTodoListType | ChangeFilterType;
+export type ActionsTodoType = AddTodoType | RemoveTodoListType | ChangeFilterType | EditTodoType;
 
 type AddTodoType = ReturnType<typeof AddTodoAC>;
 
@@ -33,6 +33,18 @@ export const ChangeFilterAC = (todoId: string, filter: FilterType) => {
     payload: {
       todoId,
       filter
+    }
+  } as const
+}
+
+type EditTodoType = ReturnType<typeof EditTodoAC>
+
+export const EditTodoAC = (todoId: string, title: string) => {
+  return {
+    type: 'EDIT-TODO',
+    payload: {
+      todoId,
+      title
     }
   } as const
 }

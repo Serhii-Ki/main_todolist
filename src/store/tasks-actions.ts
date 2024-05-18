@@ -1,4 +1,4 @@
-export type ActionsTaskType = AddNewArrayType | RemoveTaskType | ChangeCompletedType;
+export type ActionsTaskType = AddNewArrayType | RemoveTaskType | ChangeCompletedType | AddTaskType | EditTaskType;
 
 type AddNewArrayType = ReturnType<typeof AddNewArrayAC>;
 
@@ -10,6 +10,19 @@ export const AddNewArrayAC = (todoId: string) => {
     }
   } as const
 };
+
+type AddTaskType = ReturnType<typeof AddTaskAC>
+
+export const  AddTaskAC = (todoId: string, taskId: string, title: string) => {
+  return {
+    type: 'ADD-TASK',
+    payload: {
+      todoId,
+      taskId,
+      title
+    }
+  } as const
+}
 
 type RemoveTaskType = ReturnType<typeof RemoveTaskAC>;
 
@@ -31,6 +44,19 @@ export const ChangeCompletedAC = (todoId: string, taskId: string) => {
     payload: {
       todoId,
       taskId
+    }
+  } as const
+}
+
+type EditTaskType = ReturnType<typeof EditTaskAC>
+
+export const EditTaskAC = (todoId: string, taskId: string, title: string) => {
+  return {
+    type: 'EDIT-TASK',
+    payload: {
+      todoId,
+      taskId,
+      title
     }
   } as const
 }

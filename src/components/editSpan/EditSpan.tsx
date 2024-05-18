@@ -1,10 +1,13 @@
 import CustomInput from "../CustomInput/CustomInput.tsx";
+import {ChangeEvent} from "react";
 
 type EditSpanPropsType = {
   title: string;
-  viewMode: boolean
+  viewMode: boolean;
   setSpanMode: () => void;
   setInputMode: () => void;
+  value: string;
+  onChange: (value: string) => void;
 }
 
 function EditSpan(props: EditSpanPropsType) {
@@ -12,7 +15,12 @@ function EditSpan(props: EditSpanPropsType) {
 
   const InputMode = () => {
     return (
-        <CustomInput sx={{display: 'block', width: '180px', padding: '0px 5px'}} autoFocus={true} onBlur={props.setSpanMode}/>
+        <CustomInput
+            sx={{display: 'block', width: '180px', padding: '0px 5px'}}
+            autoFocus={true}
+            value={props.value}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => props.onChange(e.target.value)}
+        />
     )
   }
 

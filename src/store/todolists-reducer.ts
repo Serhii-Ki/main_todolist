@@ -17,6 +17,11 @@ export function todolistsReducer(state: TodoListType[] = todoInitial, action: Ac
         ? {...todo, filter: action.payload.filter}
         : todo
       )
+    case "EDIT-TODO":
+      return state.map(todo => todo.id === action.payload.todoId
+        ? {...todo, title: action.payload.title}
+        : todo
+      )
     default:
       return state;
   }
