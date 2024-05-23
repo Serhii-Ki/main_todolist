@@ -9,6 +9,7 @@ import {TodoListType} from "./utils/types.ts";
 import {AddTodoAC} from "./store/todolists-actions.ts";
 import {ChangeEvent, useState} from "react";
 import {AddNewArrayAC} from "./store/tasks-actions.ts";
+import useRequest from "./utils/hooks/useRequest.ts";
 
 function App() {
   const todoLists = useSelector<AppRootStateType, TodoListType[]>(state => state.todoList);
@@ -16,17 +17,20 @@ function App() {
   const [inputValue, setInputValue] = useState<string>('');
   const [isErrorText, setIsErrorText] = useState<boolean>(false);
 
+  const {addTodoListReq} = useRequest();
+
   const addTodoList = () => {
     if(inputValue) {
       const todoListId = uuidv4()
       dispatch(AddTodoAC(todoListId, inputValue));
       dispatch(AddNewArrayAC(todoListId));
       setInputValue('');
+      addTodoListReq(inputValue).then(res => console.log(res));
     } else {
       setIsErrorText(true)
     }
   }
-  
+
   const onChangeInputValue = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     setIsErrorText(false)

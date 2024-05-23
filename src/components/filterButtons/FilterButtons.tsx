@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import CustomBtn from "../CustomBtn/CustomBtn.tsx";
-import {FilterType} from "../../types/types.ts";
+import {FilterType} from "../../utils/types.ts";
 
 type FilterButtonsPropsType = {
   filter: FilterType;
