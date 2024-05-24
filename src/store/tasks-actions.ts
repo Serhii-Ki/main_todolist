@@ -1,4 +1,24 @@
-export type ActionsTaskType = AddNewArrayType | RemoveTaskType | ChangeCompletedType | AddTaskType | EditTaskType;
+import {TaskType} from "../utils/types.ts";
+
+export type ActionsTaskType =
+    AddNewArrayType
+    | RemoveTaskType
+    | ChangeCompletedType
+    | AddTaskType
+    | EditTaskType
+    | SetTaskType;
+
+type SetTaskType = ReturnType<typeof setTaskAC>
+
+export const setTaskAC = (todoId: string, tasks: TaskType[]) => {
+  return {
+    type: 'SET-TASK',
+    payload: {
+      todoId,
+      tasks
+    }
+  } as const
+}
 
 type AddNewArrayType = ReturnType<typeof AddNewArrayAC>;
 

@@ -1,6 +1,17 @@
-import {FilterType} from "../utils/types.ts";
+import {FilterType, TodoListResponseType} from "../utils/types.ts";
 
-export type ActionsTodoType = AddTodoType | RemoveTodoListType | ChangeFilterType | EditTodoType;
+export type ActionsTodoType = AddTodoType | RemoveTodoListType | ChangeFilterType | EditTodoType | SetTodoListsType;
+
+type SetTodoListsType = ReturnType<typeof setTodoListsAC>;
+
+export const setTodoListsAC = (todoLists: TodoListResponseType[]) => {
+  return {
+    type: 'SET-TODO-LIST',
+    payload: {
+      todoLists
+    }
+  } as const
+}
 
 type AddTodoType = ReturnType<typeof AddTodoAC>;
 

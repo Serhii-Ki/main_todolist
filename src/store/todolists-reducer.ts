@@ -1,13 +1,19 @@
 import {TodoListType} from "../utils/types.ts";
-import {todoInitial} from "../utils/initState.ts";
 import {ActionsTodoType} from "./todolists-actions.ts";
+
+const todoInitial: TodoListType[] = []
 
 export function todolistsReducer(state: TodoListType[] = todoInitial, action: ActionsTodoType): TodoListType[]{
   switch(action.type){
+    case "SET-TODO-LIST": {
+      return action.payload.todoLists.map(todo => ({...todo, filter: 'all'}));
+    }
     case 'ADD-TODO':
       return [...state, {
         id: action.payload.id,
         title: action.payload.title,
+        addedDate: new Date(),
+        order: 0,
         filter: 'all'
       }];
     case "REMOVE-TODO":

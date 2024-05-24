@@ -8,6 +8,11 @@ import EditSpan from "../editSpan/EditSpan.tsx";
 import BtnGroup from "../btnGroup/BtnGroup.tsx";
 import IconsGroup from "../iconsGroup/IconsGroup.tsx";
 import {useTodoList} from "./hook/useTodoList.ts";
+import useRequest from "../../utils/hooks/useRequest.ts";
+import {useEffect} from "react";
+import {useDispatch} from "react-redux";
+import {setTaskAC} from "../../store/tasks-actions.ts";
+import {fetchTasksTC} from "../../store/tasks-thunks.ts";
 
 type TodoListType = {
   id: string;
@@ -17,6 +22,7 @@ type TodoListType = {
 
 function TodoList(props: TodoListType) {
   const {
+    tasks,
     filterTasksFn,
     viewMode,
     setInputMode,
@@ -31,7 +37,12 @@ function TodoList(props: TodoListType) {
     editTodo,
     cancelEditTodo,
     isErrorText
-  } = useTodoList(props.id, props.title, props.filter)
+  } = useTodoList(props.id, props.title, props.filter);
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchTasksTC(props.id))
+  }, []);
 
   return (
       <Paper sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '400px', padding: '20px'}}>
@@ -53,14 +64,14 @@ function TodoList(props: TodoListType) {
             addItem={addTask}
             isErrorText={isErrorText}
         />
-        {filterTasksFn().map((task) =>
+        {tasks[props.id] ? tasks[props.id].map((task) =>
             <Task
                 key={task.id}
                 taskId={task.id}
                 title={task.title}
                 isDone={task.completed}
                 todoId={props.id}
-            />)}
+            />) : <div>Empty</div>}
         <FilterButtons changeFiler={changeFiler} filter={props.filter}/>
       </Paper>
   );

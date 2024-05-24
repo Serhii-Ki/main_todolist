@@ -1,11 +1,10 @@
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../store/store.ts";
 import {FilterType, TasksType, TaskType} from "../../../utils/types.ts";
-import {ChangeEvent, useEffect, useState} from "react";
+import {ChangeEvent, useState} from "react";
 import {ChangeFilterAC, EditTodoAC, RemoveTodoAC} from "../../../store/todolists-actions.ts";
 import {v4 as uuidv4} from "uuid";
 import {AddTaskAC} from "../../../store/tasks-actions.ts";
-import useRequest from "../../../utils/hooks/useRequest.ts";
 
 export const useTodoList = (todoId: string, titleTodo: string, filter: FilterType) => {
   const tasks = useSelector<AppRootStateType, TasksType>(state => state.task);
@@ -14,12 +13,6 @@ export const useTodoList = (todoId: string, titleTodo: string, filter: FilterTyp
   const [editInputValue, setEditInputValue] = useState<string>(titleTodo);
   const [viewMode, setViewMode] = useState<boolean>(false);
   const [isErrorText, setIsErrorText] = useState<boolean>(false);
-
-  //Request
-  const {getTodoLists} = useRequest()
-  useEffect(() => {
-    getTodoLists().then(todos => console.log(todos))
-  }, [])
 
   let filterTasks: TaskType[];
 
@@ -75,6 +68,7 @@ export const useTodoList = (todoId: string, titleTodo: string, filter: FilterTyp
   }
 
   return {
+    tasks,
     filterTasksFn,
     viewMode,
     setInputMode,

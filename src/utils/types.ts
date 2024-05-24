@@ -1,17 +1,30 @@
 export type FilterType = "all" | "active" | "completed";
 
 export type TaskType = {
-  id: string,
-  title: string,
-  completed: boolean,
+  description: string
+  title: string
+  completed: (boolean)
+  status: number
+  priority: number
+  startDate: Date
+  deadline: Date
+  id: (string)
+  todoListId: (string)
+  order: number
+  addedDate: Date
 }
 
 export type TasksType = {
   [key: string]: TaskType[]
 }
 
-export type TodoListType = {
+export type TodoListResponseType = {
   id: string,
   title: string,
-  filter: FilterType
+  addedDate: Date,
+  order: number,
 }
+
+export type TodoListType = {
+  filter: FilterType
+} & TodoListResponseType

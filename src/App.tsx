@@ -7,9 +7,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store/store.ts";
 import {TodoListType} from "./utils/types.ts";
 import {AddTodoAC} from "./store/todolists-actions.ts";
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, useEffect, useState} from "react";
 import {AddNewArrayAC} from "./store/tasks-actions.ts";
 import useRequest from "./utils/hooks/useRequest.ts";
+import {fetchTodolistsTC} from "./store/todolists-thunks.ts";
 
 function App() {
   const todoLists = useSelector<AppRootStateType, TodoListType[]>(state => state.todoList);
@@ -18,6 +19,10 @@ function App() {
   const [isErrorText, setIsErrorText] = useState<boolean>(false);
 
   const {addTodoListReq} = useRequest();
+
+  useEffect(() => {
+    dispatch(fetchTodolistsTC())
+  }, [])
 
   const addTodoList = () => {
     if(inputValue) {
