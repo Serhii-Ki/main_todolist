@@ -1,11 +1,12 @@
 import {useState} from "react";
-import {useDispatch} from "react-redux";
-import {ChangeCompletedAC, EditTaskAC, RemoveTaskAC} from "../../../store/tasks-actions.ts";
+import {ChangeCompletedAC, EditTaskAC} from "../../../store/tasks-actions.ts";
+import {fetchRemoveTaskTC} from "../../../store/tasks-thunks.ts";
+import {useAppDispatch} from "../../../store/store.ts";
 
 export const useTask = (todoId: string, taskId: string, taskTitle: string) => {
   const [viewMode, setViewMode] = useState<boolean>(false);
   const [editInputValue, setEditInputValue] = useState<string>(taskTitle);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const setInputMode = () => {
     setViewMode(true);
@@ -16,7 +17,7 @@ export const useTask = (todoId: string, taskId: string, taskTitle: string) => {
   }
 
   const removeTask = () => {
-    dispatch(RemoveTaskAC(todoId, taskId))
+    dispatch(fetchRemoveTaskTC(todoId, taskId))
   }
 
   const changeCompleted = () => {

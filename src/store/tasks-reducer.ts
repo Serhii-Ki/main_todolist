@@ -13,12 +13,7 @@ export function tasksReducer(state: TasksType = tasksInitial, action: ActionsTas
     case 'ADD-NEW-ARRAY':
       return {...state, [action.payload.todoId]: []};
     case "ADD-TASK":
-      return state
-      // return {...state, [action.payload.todoId] : [...state[action.payload.todoId], {
-      //   id: action.payload.taskId,
-      //   title: action.payload.title,
-      //   completed: false
-      //   }]}
+      return {...state, [action.payload.todoId] : [...state[action.payload.todoId], action.payload.task]}
     case 'REMOVE-TASK':
       return {...state,
         [action.payload.todoId]: state[action.payload.todoId].filter(task => task.id !== action.payload.taskId)

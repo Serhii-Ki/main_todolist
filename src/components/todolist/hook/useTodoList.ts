@@ -1,30 +1,18 @@
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../../store/store.ts";
-import {FilterType, TasksType, TaskType} from "../../../utils/types.ts";
+import {useSelector} from "react-redux";
+import {AppRootStateType, useAppDispatch} from "../../../store/store.ts";
+import {FilterType, TasksType} from "../../../utils/types.ts";
 import {ChangeEvent, useState} from "react";
-import {ChangeFilterAC, EditTodoAC, RemoveTodoAC} from "../../../store/todolists-actions.ts";
-import {v4 as uuidv4} from "uuid";
-import {AddTaskAC} from "../../../store/tasks-actions.ts";
+import {ChangeFilterAC} from "../../../store/todolists-actions.ts";
+import {fetchRemoveTodolistTC, fetchUpdateTodolistTC} from "../../../store/todolists-thunks.ts";
+import {fetchAddTaskTC} from "../../../store/tasks-thunks.ts";
 
 export const useTodoList = (todoId: string, titleTodo: string, filter: FilterType) => {
   const tasks = useSelector<AppRootStateType, TasksType>(state => state.task);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = useState<string>('');
   const [editInputValue, setEditInputValue] = useState<string>(titleTodo);
   const [viewMode, setViewMode] = useState<boolean>(false);
   const [isErrorText, setIsErrorText] = useState<boolean>(false);
-
-  let filterTasks: TaskType[];
-
-  const filterTasksFn = () => {
-    if(filter === 'completed'){
-      return filterTasks = tasks[todoId].filter(task => task.completed)
-    } else if(filter === 'active') {
-      return filterTasks = tasks[todoId].filter(task => !task.completed)
-    } else {
-      return filterTasks = tasks[todoId];
-    }
-  }
 
   const setInputMode = () => {
     setViewMode(true);
@@ -39,8 +27,17 @@ export const useTodoList = (todoId: string, titleTodo: string, filter: FilterTyp
     setIsErrorText(false)
   }
 
+  const filteredTasks = () => {
+    if(filter === 'active') {
+      return tasks[todoId].filter(task =>!task.completed)
+    } else if(filter === 'completed') {
+      return tasks[todoId].filter(task => task.completed)
+    }
+    return tasks[todoId];
+  }
+
   const removeTodoList = () => {
-    dispatch(RemoveTodoAC(todoId))
+    dispatch(fetchRemoveTodolistTC(todoId))
   }
 
   const changeFiler = (filter: FilterType) => {
@@ -48,9 +45,8 @@ export const useTodoList = (todoId: string, titleTodo: string, filter: FilterTyp
   }
 
   const addTask = () => {
-    const taskId = uuidv4();
     if(inputValue.trim()) {
-      dispatch(AddTaskAC(todoId, taskId, inputValue));
+      dispatch(fetchAddTaskTC(todoId, inputValue));
       setInputValue('')
     } else {
       setIsErrorText(true)
@@ -58,7 +54,7 @@ export const useTodoList = (todoId: string, titleTodo: string, filter: FilterTyp
   }
 
   const editTodo = () => {
-    dispatch(EditTodoAC(todoId, editInputValue))
+    dispatch(fetchUpdateTodolistTC(todoId, editInputValue))
     setSpanMode()
   }
 
@@ -69,7 +65,7 @@ export const useTodoList = (todoId: string, titleTodo: string, filter: FilterTyp
 
   return {
     tasks,
-    filterTasksFn,
+    filteredTasks,
     viewMode,
     setInputMode,
     setSpanMode,

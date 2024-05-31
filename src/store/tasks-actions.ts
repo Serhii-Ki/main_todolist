@@ -33,13 +33,12 @@ export const AddNewArrayAC = (todoId: string) => {
 
 type AddTaskType = ReturnType<typeof AddTaskAC>
 
-export const  AddTaskAC = (todoId: string, taskId: string, title: string) => {
+export const  AddTaskAC = (todoId: string, task: TaskType) => {
   return {
     type: 'ADD-TASK',
     payload: {
       todoId,
-      taskId,
-      title
+      task
     }
   } as const
 }

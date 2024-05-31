@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import { v4 as uuidv4 } from 'uuid';
 import AddForm from "./components/AddForm/AddForm.tsx";
 import TodoList from "./components/todolist/TodoList.tsx";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./store/store.ts";
+import {useSelector} from "react-redux";
+import {AppRootStateType, useAppDispatch} from "./store/store.ts";
 import {TodoListType} from "./utils/types.ts";
 import {AddTodoAC} from "./store/todolists-actions.ts";
 import {ChangeEvent, useEffect, useState} from "react";
@@ -14,14 +14,14 @@ import {fetchTodolistsTC} from "./store/todolists-thunks.ts";
 
 function App() {
   const todoLists = useSelector<AppRootStateType, TodoListType[]>(state => state.todoList);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = useState<string>('');
   const [isErrorText, setIsErrorText] = useState<boolean>(false);
 
   const {addTodoListReq} = useRequest();
 
   useEffect(() => {
-    dispatch(fetchTodolistsTC())
+    dispatch(fetchTodolistsTC());
   }, [])
 
   const addTodoList = () => {

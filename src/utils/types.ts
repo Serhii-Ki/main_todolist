@@ -3,13 +3,13 @@ export type FilterType = "all" | "active" | "completed";
 export type TaskType = {
   description: string
   title: string
-  completed: (boolean)
+  completed: boolean
   status: number
   priority: number
   startDate: Date
   deadline: Date
-  id: (string)
-  todoListId: (string)
+  id: string
+  todoListId: string
   order: number
   addedDate: Date
 }
