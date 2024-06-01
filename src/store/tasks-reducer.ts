@@ -18,21 +18,23 @@ export function tasksReducer(state: TasksType = tasksInitial, action: ActionsTas
       return {...state,
         [action.payload.todoId]: state[action.payload.todoId].filter(task => task.id !== action.payload.taskId)
       }
-    case "CHANGE-COMPLETED":
-      return {...state,
-        [action.payload.todoId]: state[action.payload.todoId].map(task =>
-          task.id === action.payload.taskId
-          ? {...task, completed: !task.completed}
-          : task
-        )
-      }
-    case "EDIT-TASK":
-      return {...state,
-        [action.payload.todoId]: state[action.payload.todoId].map(task =>
-          task.id === action.payload.taskId
-          ? {...task, title: action.payload.title}
-          : task
-        )
+    case "UPDATE-TASK":
+      if(action.payload.newTitle) {
+        return {...state,
+          [action.payload.todoId]: state[action.payload.todoId].map(task =>
+            task.id === action.payload.taskId
+             ? {...task, title: action.payload.newTitle || task.title}
+              : task
+          )
+        }
+      } else {
+        return {...state,
+          [action.payload.todoId]: state[action.payload.todoId].map(task =>
+            task.id === action.payload.taskId
+             ? {...task, completed:!task.completed}
+              : task
+          )
+        }
       }
     default:
       return state

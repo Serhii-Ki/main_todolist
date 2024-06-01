@@ -3,9 +3,8 @@ import {TaskType} from "../utils/types.ts";
 export type ActionsTaskType =
     AddNewArrayType
     | RemoveTaskType
-    | ChangeCompletedType
     | AddTaskType
-    | EditTaskType
+    | UpdateTaskType
     | SetTaskType;
 
 type SetTaskType = ReturnType<typeof setTaskAC>
@@ -55,27 +54,17 @@ export const RemoveTaskAC = (todoId: string, taskId: string) => {
   } as const
 }
 
-type ChangeCompletedType = ReturnType<typeof ChangeCompletedAC>
+type UpdateTaskType = ReturnType<typeof UpdateTaskTypeAC>
 
-export const ChangeCompletedAC = (todoId: string, taskId: string) => {
+export const UpdateTaskTypeAC = (todoId: string, taskId: string, newTitle: string | null, completed: boolean | null) => {
   return {
-    type: 'CHANGE-COMPLETED',
-    payload: {
-      todoId,
-      taskId
-    }
-  } as const
-}
-
-type EditTaskType = ReturnType<typeof EditTaskAC>
-
-export const EditTaskAC = (todoId: string, taskId: string, title: string) => {
-  return {
-    type: 'EDIT-TASK',
+    type: 'UPDATE-TASK',
     payload: {
       todoId,
       taskId,
-      title
+      newTitle,
+      completed
     }
   } as const
 }
+

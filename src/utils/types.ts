@@ -14,6 +14,8 @@ export type TaskType = {
   addedDate: Date
 }
 
+export type TaskPutRequestType = Omit<TaskType, 'id' | 'todoListId' | 'order' | 'addedDate'>;
+
 export type TasksType = {
   [key: string]: TaskType[]
 }

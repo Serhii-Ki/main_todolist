@@ -1,6 +1,7 @@
 import useRequest from "../utils/hooks/useRequest.ts";
-import {AddTaskAC, RemoveTaskAC, setTaskAC} from "./tasks-actions.ts";
+import {AddTaskAC, RemoveTaskAC, setTaskAC, UpdateTaskTypeAC} from "./tasks-actions.ts";
 import {AppThunkType} from "./store.ts";
+import {TaskPutRequestType} from "../utils/types.ts";
 
 export const fetchTasksTC = (todoId: string): AppThunkType => {
   return (dispatch) => {
@@ -29,6 +30,33 @@ export const fetchRemoveTaskTC = (todoId: string, taskId: string): AppThunkType 
     try {
       await useRequest().removeTaskReq(todoId, taskId);
       dispatch(RemoveTaskAC(todoId, taskId));
+    } catch (err) {
+      console.log(err)
+    }
+  }
+}
+
+export const fetchUpdateTaskTC = (todoId: string, taskId: string, newTitle: null | string = null, completed: null | boolean = null ): AppThunkType => {
+  return async (dispatch, getState) => {
+    const task = getState().task[todoId].find(task => task.id === taskId);
+
+    if(!task) {
+      return
+    }
+
+    const payload: TaskPutRequestType = {
+      title: newTitle || task.title,
+      description: task.description,
+      completed: completed !== null ? completed : task.completed,
+      status: task.status,
+      priority: task.priority,
+      startDate: task.startDate,
+      deadline: task.deadline
+    }
+
+    try {
+      await useRequest().updateTaskReq(todoId, taskId, payload);
+      dispatch(UpdateTaskTypeAC(todoId, taskId, newTitle, completed))
     } catch (err) {
       console.log(err)
     }

@@ -1,6 +1,5 @@
 import {useState} from "react";
-import {ChangeCompletedAC, EditTaskAC} from "../../../store/tasks-actions.ts";
-import {fetchRemoveTaskTC} from "../../../store/tasks-thunks.ts";
+import {fetchRemoveTaskTC, fetchUpdateTaskTC} from "../../../store/tasks-thunks.ts";
 import {useAppDispatch} from "../../../store/store.ts";
 
 export const useTask = (todoId: string, taskId: string, taskTitle: string) => {
@@ -21,12 +20,12 @@ export const useTask = (todoId: string, taskId: string, taskTitle: string) => {
   }
 
   const changeCompleted = () => {
-    dispatch(ChangeCompletedAC(todoId, taskId))
+    dispatch(fetchUpdateTaskTC(todoId, taskId, null, true))
   }
 
   const editTask = () => {
     if(editInputValue){
-      dispatch(EditTaskAC(todoId, taskId, editInputValue));
+      dispatch(fetchUpdateTaskTC(todoId, taskId, editInputValue, null));
       setViewMode(false)
     }
   }

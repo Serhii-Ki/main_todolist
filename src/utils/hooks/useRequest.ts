@@ -1,5 +1,5 @@
 import axios from "axios";
-import {TaskType, TodoListResponseType} from "../types.ts";
+import {TaskPutRequestType, TodoListResponseType} from "../types.ts";
 
 function useRequest() {
   const instance = axios.create({
@@ -38,7 +38,7 @@ function useRequest() {
     return instance.delete(`todo-lists/${todoId}/tasks/${taskId}`)
   }
 
-  const updateTaskReq = (todoId: string, taskId: string, payload: TaskType) => {
+  const updateTaskReq = (todoId: string, taskId: string, payload: TaskPutRequestType) => {
     return instance.put(`todo-lists/${todoId}/tasks/${taskId}`, {payload})
   }
 
