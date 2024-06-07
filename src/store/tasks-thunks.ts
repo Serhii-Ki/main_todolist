@@ -4,12 +4,13 @@ import {AppThunkType} from "./store.ts";
 import {TaskPutRequestType} from "../utils/types.ts";
 
 export const fetchTasksTC = (todoId: string): AppThunkType => {
-  return (dispatch) => {
-    useRequest().getTasks(todoId)
-     .then(res => {
-        dispatch(setTaskAC(todoId, res.data.items))
-      })
-
+  return async (dispatch) => {
+    try {
+      const res = await useRequest().getTasks(todoId)
+      dispatch(setTaskAC(todoId, res.data.items))
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 
@@ -17,7 +18,6 @@ export const fetchAddTaskTC = (todoId: string, title: string): AppThunkType => {
   return async dispatch => {
     try {
       const res = await useRequest().addTaskReq(todoId, title);
-      console.log(res.data)
       dispatch(AddTaskAC(todoId, res.data.data.item))
     } catch (err) {
       console.log(err)
@@ -47,8 +47,8 @@ export const fetchUpdateTaskTC = (todoId: string, taskId: string, newTitle: null
     const payload: TaskPutRequestType = {
       title: newTitle || task.title,
       description: task.description,
-      completed: completed !== null ? completed : task.completed,
-      status: task.status,
+      completed: task.completed,
+      status: completed !== null ? task.status === 0 ? 1 : 0 : task.status,
       priority: task.priority,
       startDate: task.startDate,
       deadline: task.deadline

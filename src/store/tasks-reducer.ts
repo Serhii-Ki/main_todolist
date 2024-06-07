@@ -31,7 +31,7 @@ export function tasksReducer(state: TasksType = tasksInitial, action: ActionsTas
         return {...state,
           [action.payload.todoId]: state[action.payload.todoId].map(task =>
             task.id === action.payload.taskId
-             ? {...task, completed:!task.completed}
+             ? {...task, status: task.status ? 0 : 1}
               : task
           )
         }

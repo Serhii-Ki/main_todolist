@@ -67,7 +67,7 @@ function TodoList(props: TodoListType) {
                 key={task.id}
                 taskId={task.id}
                 title={task.title}
-                isDone={task.completed}
+                status={task.status}
                 todoId={props.id}
             />) : <div>Empty</div>}
         <FilterButtons changeFiler={changeFiler} filter={props.filter}/>

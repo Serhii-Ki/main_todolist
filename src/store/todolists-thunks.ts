@@ -3,11 +3,13 @@ import {EditTodoAC, RemoveTodoAC, setTodoListsAC} from "./todolists-actions.ts";
 import {AppThunkType} from "./store.ts";
 
 export const fetchTodolistsTC = (): AppThunkType => {
-  return (dispatch) => {
-    useRequest().getTodoLists()
-     .then(res => {
-        dispatch(setTodoListsAC(res.data))
-      })
+  return async (dispatch) => {
+    try {
+      const res = await useRequest().getTodoLists();
+      dispatch(setTodoListsAC(res.data))
+    } catch (err) {
+      console.log(err)
+    }
   }
 }
 

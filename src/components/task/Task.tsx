@@ -8,7 +8,7 @@ import {useTask} from "./hook/useTask.ts";
 type TaskPropsType = {
   taskId: string;
   title: string;
-  isDone: boolean;
+  status: number;
   todoId: string;
 }
 
@@ -29,7 +29,7 @@ function Task(props: TaskPropsType) {
   return (
       <Box display='flex' alignItems='center' marginTop='15px'>
         <Box display='flex' alignItems='center'>
-          {!viewMode && <Checkbox checked={props.isDone} onChange={changeCompleted}/>}
+          {!viewMode && <Checkbox checked={!!props.status} onChange={changeCompleted}/>}
           <EditSpan
               title={props.title}
               setSpanMode={setSpanMode}

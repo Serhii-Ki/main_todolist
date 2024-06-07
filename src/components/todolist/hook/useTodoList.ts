@@ -3,10 +3,10 @@ import {AppRootStateType, useAppDispatch} from "../../../store/store.ts";
 import {FilterType, TasksType} from "../../../utils/types.ts";
 import {ChangeEvent, useState} from "react";
 import {ChangeFilterAC} from "../../../store/todolists-actions.ts";
-import {fetchRemoveTodolistTC, fetchUpdateTodolistTC} from "../../../store/todolists-thunks.ts";
+import {fetchRemoveTodolistTC, fetchTodolistsTC, fetchUpdateTodolistTC} from "../../../store/todolists-thunks.ts";
 import {fetchAddTaskTC} from "../../../store/tasks-thunks.ts";
 
-export const useTodoList = (todoId: string, titleTodo: string, filter: FilterType) => {
+export const useTodoList = (todoId: string = '', titleTodo: string = '', filter: FilterType = 'all') => {
   const tasks = useSelector<AppRootStateType, TasksType>(state => state.task);
   const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = useState<string>('');
@@ -29,11 +29,15 @@ export const useTodoList = (todoId: string, titleTodo: string, filter: FilterTyp
 
   const filteredTasks = () => {
     if(filter === 'active') {
-      return tasks[todoId].filter(task =>!task.completed)
+      return tasks[todoId].filter(task => task.status === 0)
     } else if(filter === 'completed') {
-      return tasks[todoId].filter(task => task.completed)
+      return tasks[todoId].filter(task => task.status === 1)
     }
     return tasks[todoId];
+  }
+
+  const getTodoLists = () => {
+    dispatch(fetchTodolistsTC());
   }
 
   const removeTodoList = () => {
@@ -71,6 +75,7 @@ export const useTodoList = (todoId: string, titleTodo: string, filter: FilterTyp
     setSpanMode,
     inputValue,
     onChangeInput,
+    getTodoLists,
     removeTodoList,
     changeFiler,
     addTask,

@@ -30,3 +30,5 @@ export type TodoListResponseType = {
 export type TodoListType = {
   filter: FilterType
 } & TodoListResponseType
+
+export type StatusType = 'idle' | 'loading' | 'success' | 'error'

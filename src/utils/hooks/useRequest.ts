@@ -39,7 +39,7 @@ function useRequest() {
   }
 
   const updateTaskReq = (todoId: string, taskId: string, payload: TaskPutRequestType) => {
-    return instance.put(`todo-lists/${todoId}/tasks/${taskId}`, {payload})
+    return instance.put(`todo-lists/${todoId}/tasks/${taskId}`, payload)
   }
 
   return {
