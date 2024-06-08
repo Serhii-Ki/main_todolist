@@ -3,8 +3,11 @@ import Button from "@mui/material/Button";
 import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
 import ProgressLinear from "../progressLinear/ProgressLinear.tsx";
+import {useAppSelector} from "../../store/store.ts";
+import {selectAppStatus} from "../../store/selectors.ts";
 
 function Header() {
+  const status = useAppSelector(selectAppStatus);
   return (
       <Box>
         <AppBar position="static">
@@ -24,7 +27,7 @@ function Header() {
             <Button color="inherit">Login</Button>
           </Toolbar>
         </AppBar>
-        <ProgressLinear/>
+        {status === 'loading' && <ProgressLinear/>}
       </Box>
   );
 }

@@ -1,4 +1,4 @@
-import {FilterType, TodoListResponseType} from "../utils/types.ts";
+import {FilterType, TodoListResponseType} from "../../utils/types.ts";
 
 export type ActionsTodoType = AddTodoType | RemoveTodoListType | ChangeFilterType | EditTodoType | SetTodoListsType;
 

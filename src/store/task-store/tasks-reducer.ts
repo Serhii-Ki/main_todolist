@@ -1,4 +1,4 @@
-import {TasksType} from "../utils/types.ts";
+import {TasksType} from "../../utils/types.ts";
 import {ActionsTaskType} from "./tasks-actions.ts";
 
 export const tasksInitial: TasksType = {}

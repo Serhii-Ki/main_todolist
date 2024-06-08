@@ -1,7 +1,7 @@
-import useRequest from "../utils/hooks/useRequest.ts";
+import useRequest from "../../utils/hooks/useRequest.ts";
 import {AddTaskAC, RemoveTaskAC, setTaskAC, UpdateTaskTypeAC} from "./tasks-actions.ts";
-import {AppThunkType} from "./store.ts";
-import {TaskPutRequestType} from "../utils/types.ts";
+import {AppThunkType} from "../store.ts";
+import {TaskPutRequestType} from "../../utils/types.ts";
 
 export const fetchTasksTC = (todoId: string): AppThunkType => {
   return async (dispatch) => {

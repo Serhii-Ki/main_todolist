@@ -1,4 +1,4 @@
-import {TaskType} from "../utils/types.ts";
+import {TaskType} from "../../utils/types.ts";
 
 export type ActionsTaskType =
     AddNewArrayType

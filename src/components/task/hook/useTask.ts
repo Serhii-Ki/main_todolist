@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {fetchRemoveTaskTC, fetchUpdateTaskTC} from "../../../store/tasks-thunks.ts";
+import {fetchRemoveTaskTC, fetchUpdateTaskTC} from "../../../store/task-store/tasks-thunks.ts";
 import {useAppDispatch} from "../../../store/store.ts";
 
 export const useTask = (todoId: string, taskId: string, taskTitle: string) => {

@@ -1,12 +1,25 @@
-import useRequest from "../utils/hooks/useRequest.ts";
+import useRequest from "../../utils/hooks/useRequest.ts";
 import {EditTodoAC, RemoveTodoAC, setTodoListsAC} from "./todolists-actions.ts";
-import {AppThunkType} from "./store.ts";
+import {AppThunkType} from "../store.ts";
 
 export const fetchTodolistsTC = (): AppThunkType => {
   return async (dispatch) => {
     try {
       const res = await useRequest().getTodoLists();
-      dispatch(setTodoListsAC(res.data))
+      dispatch(setTodoListsAC(res.data));
+      return res;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  }
+}
+
+export const fetchAddTodolistTC = (title: string): AppThunkType => {
+  return async dispatch => {
+    try {
+      const res = await useRequest().addTodoListReq(title);
+      dispatch(EditTodoAC(res.data.data.item.id, res.data.data.item.title))
     } catch (err) {
       console.log(err)
     }

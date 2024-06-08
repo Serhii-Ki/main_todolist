@@ -1,4 +1,4 @@
-import {TodoListType} from "../utils/types.ts";
+import {TodoListType} from "../../utils/types.ts";
 import {ActionsTodoType} from "./todolists-actions.ts";
 
 const todoInitial: TodoListType[] = []
