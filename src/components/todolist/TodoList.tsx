@@ -9,8 +9,6 @@ import BtnGroup from "../btnGroup/BtnGroup.tsx";
 import IconsGroup from "../iconsGroup/IconsGroup.tsx";
 import {useTodoList} from "./hook/useTodoList.ts";
 import {useEffect} from "react";
-import {fetchTasksTC} from "../../store/tasks-thunks.ts";
-import {useAppDispatch} from "../../store/store.ts";
 
 type TodoListType = {
   id: string;
@@ -27,6 +25,7 @@ function TodoList(props: TodoListType) {
     setSpanMode,
     inputValue,
     onChangeInput,
+    getTasks,
     removeTodoList,
     changeFiler,
     addTask,
@@ -36,10 +35,9 @@ function TodoList(props: TodoListType) {
     cancelEditTodo,
     isErrorText
   } = useTodoList(props.id, props.title, props.filter);
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchTasksTC(props.id))
+    getTasks()
   }, []);
 
   return (

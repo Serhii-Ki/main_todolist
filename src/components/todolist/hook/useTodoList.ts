@@ -1,13 +1,14 @@
-import {useSelector} from "react-redux";
-import {AppRootStateType, useAppDispatch} from "../../../store/store.ts";
-import {FilterType, TasksType} from "../../../utils/types.ts";
+import { useAppDispatch, useAppSelector} from "../../../store/store.ts";
+import {FilterType} from "../../../utils/types.ts";
 import {ChangeEvent, useState} from "react";
 import {ChangeFilterAC} from "../../../store/todolists-actions.ts";
 import {fetchRemoveTodolistTC, fetchTodolistsTC, fetchUpdateTodolistTC} from "../../../store/todolists-thunks.ts";
-import {fetchAddTaskTC} from "../../../store/tasks-thunks.ts";
+import {fetchAddTaskTC, fetchTasksTC} from "../../../store/tasks-thunks.ts";
+import {selectAllTasks} from "../../../store/selectors.ts";
 
 export const useTodoList = (todoId: string = '', titleTodo: string = '', filter: FilterType = 'all') => {
-  const tasks = useSelector<AppRootStateType, TasksType>(state => state.task);
+  // const tasks = useSelector<AppRootStateType, TasksType>(state => state.task);
+  const tasks = useAppSelector(selectAllTasks)
   const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = useState<string>('');
   const [editInputValue, setEditInputValue] = useState<string>(titleTodo);
@@ -38,6 +39,10 @@ export const useTodoList = (todoId: string = '', titleTodo: string = '', filter:
 
   const getTodoLists = () => {
     dispatch(fetchTodolistsTC());
+  }
+
+  const getTasks = () => {
+    dispatch(fetchTasksTC(todoId))
   }
 
   const removeTodoList = () => {
@@ -76,6 +81,7 @@ export const useTodoList = (todoId: string = '', titleTodo: string = '', filter:
     inputValue,
     onChangeInput,
     getTodoLists,
+    getTasks,
     removeTodoList,
     changeFiler,
     addTask,
