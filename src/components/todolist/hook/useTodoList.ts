@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector} from "../../../store/store.ts";
-import {FilterType, StatusType} from "../../../utils/types.ts";
+import {FilterType} from "../../../utils/types.ts";
 import {ChangeEvent, useState} from "react";
 import {ChangeFilterAC} from "../../../store/todo-store/todolists-actions.ts";
 import {
@@ -10,10 +10,8 @@ import {
 } from "../../../store/todo-store/todolists-thunks.ts";
 import {fetchAddTaskTC, fetchTasksTC} from "../../../store/task-store/tasks-thunks.ts";
 import {selectAllTasks} from "../../../store/selectors.ts";
-import {setLoadingAC, setSuccessAC} from "../../../store/appStatus-store/appStatus-actions.ts";
 
 export const useTodoList = (todoId: string = '', titleTodo: string = '', filter: FilterType = 'all') => {
-  // const tasks = useSelector<AppRootStateType, TasksType>(state => state.task);
   const tasks = useAppSelector(selectAllTasks)
   const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = useState<string>('');
@@ -44,9 +42,7 @@ export const useTodoList = (todoId: string = '', titleTodo: string = '', filter:
   }
 
   const getTodoLists = () => {
-    dispatch(setLoadingAC())
     dispatch(fetchTodolistsTC())
-        .then(() => dispatch(setSuccessAC()))
   }
 
   const getTasks = () => {

@@ -1,4 +1,4 @@
-export type AppStatusActionsType = SetLoadingType | SetSuccessType;
+export type AppStatusActionsType = SetLoadingType | SetSuccessType | SetErrorType;
 
 type SetLoadingType = ReturnType<typeof setLoadingAC>;
 
@@ -13,5 +13,14 @@ type SetSuccessType = ReturnType<typeof setSuccessAC>;
 export const setSuccessAC = () => {
   return {
     type: 'SET-SUCCESS',
+  } as const
+}
+
+type SetErrorType = ReturnType<typeof setErrorAC>
+
+export const setErrorAC = (error: string) => {
+  return {
+    type: 'SET-ERROR',
+    error
   } as const
 }

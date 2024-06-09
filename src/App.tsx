@@ -1,19 +1,16 @@
 import Container from '@mui/material/Container';
 import Box from "@mui/material/Box";
-import { v4 as uuidv4 } from 'uuid';
 import AddForm from "./components/AddForm/AddForm.tsx";
 import TodoList from "./components/todolist/TodoList.tsx";
-import {useAppDispatch, useAppSelector} from "./store/store.ts";
-import {AddTodoAC} from "./store/todo-store/todolists-actions.ts";
+import {useAppSelector} from "./store/store.ts";
 import {ChangeEvent, useEffect, useState} from "react";
-import {AddNewArrayAC} from "./store/task-store/tasks-actions.ts";
 import {selectAllTodoLists} from "./store/selectors.ts";
 import Header from "./components/header/Header.tsx";
 import {useTodoList} from "./components/todolist/hook/useTodoList.ts";
+import SnackbarError from "./components/snackbar/Snackbar.tsx";
 
 function App() {
   const todoLists = useAppSelector(selectAllTodoLists)
-  const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = useState<string>('');
   const [isErrorText, setIsErrorText] = useState<boolean>(false);
 
@@ -26,11 +23,8 @@ function App() {
 
   const addTodoList = () => {
     if(inputValue) {
-      const todoListId = uuidv4()
-      dispatch(AddTodoAC(todoListId, inputValue));
-      dispatch(AddNewArrayAC(todoListId));
-      setInputValue('');
       addTodoListReq(inputValue)
+      setInputValue('');
     } else {
       setIsErrorText(true)
     }
@@ -43,6 +37,7 @@ function App() {
 
   return (
       <>
+        <SnackbarError/>
         <Header/>
         <Container>
           <AddForm

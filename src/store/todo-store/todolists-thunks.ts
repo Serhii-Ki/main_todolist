@@ -1,16 +1,19 @@
 import useRequest from "../../utils/hooks/useRequest.ts";
-import {EditTodoAC, RemoveTodoAC, setTodoListsAC} from "./todolists-actions.ts";
+import {AddTodoAC, EditTodoAC, RemoveTodoAC, setTodoListsAC} from "./todolists-actions.ts";
 import {AppThunkType} from "../store.ts";
+import {setErrorAC, setLoadingAC, setSuccessAC} from "../appStatus-store/appStatus-actions.ts";
+import {AddNewArrayAC} from "../task-store/tasks-actions.ts";
 
 export const fetchTodolistsTC = (): AppThunkType => {
   return async (dispatch) => {
     try {
+      dispatch(setLoadingAC())
       const res = await useRequest().getTodoLists();
+      console.log(res)
       dispatch(setTodoListsAC(res.data));
-      return res;
+      dispatch(setSuccessAC())
     } catch (err) {
-      console.log(err);
-      throw err;
+      dispatch(setErrorAC(String(err)))
     }
   }
 }
@@ -18,8 +21,11 @@ export const fetchTodolistsTC = (): AppThunkType => {
 export const fetchAddTodolistTC = (title: string): AppThunkType => {
   return async dispatch => {
     try {
+      dispatch(setLoadingAC())
       const res = await useRequest().addTodoListReq(title);
-      dispatch(EditTodoAC(res.data.data.item.id, res.data.data.item.title))
+      dispatch(AddTodoAC(res.data.data.item.id, title))
+      dispatch(AddNewArrayAC(res.data.data.item.id))
+      dispatch(setSuccessAC())
     } catch (err) {
       console.log(err)
     }
