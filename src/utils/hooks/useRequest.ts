@@ -1,5 +1,5 @@
 import axios from "axios";
-import {TaskPutRequestType, TodoListResponseType} from "../types.ts";
+import {ResponseType, TaskPutRequestType, TodoListResponseType} from "../types.ts";
 
 function useRequest() {
   const instance = axios.create({
@@ -15,7 +15,7 @@ function useRequest() {
   }
 
   const addTodoListReq = (title: string) => {
-    return instance.post('todo-lists', {title})
+    return instance.post<ResponseType>('todo-lists', {title})
   }
 
   const removeTodoListReq = (todoId: string) => {

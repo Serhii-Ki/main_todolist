@@ -3,9 +3,19 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import {useAppSelector} from "../../store/store.ts";
+import {selectorAppState} from "../../store/selectors.ts";
+import {useEffect} from "react";
 
 function SnackbarError() {
   const [open, setOpen] = React.useState(false);
+  const {loadingStatus, errorText} = useAppSelector(selectorAppState);
+
+  useEffect(() => {
+    if(loadingStatus === 'error') {
+      setOpen(true)
+    }
+  }, [loadingStatus]);
 
   const handleClick = () => {
     setOpen(true);
@@ -21,9 +31,6 @@ function SnackbarError() {
 
   const action = (
       <>
-        <Button color="secondary" size="small" onClick={handleClose}>
-          UNDO
-        </Button>
         <IconButton
             size="small"
             aria-label="close"
@@ -43,7 +50,7 @@ function SnackbarError() {
             open={open}
             autoHideDuration={6000}
             onClose={handleClose}
-            message="Note archived"
+            message={errorText}
             action={action}
         />
       </div>

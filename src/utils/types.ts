@@ -21,14 +21,22 @@ export type TasksType = {
 }
 
 export type TodoListResponseType = {
-  id: string,
-  title: string,
-  addedDate: Date,
-  order: number,
+  id: string
+  title: string
+  addedDate: Date
+  order: number
 }
 
 export type TodoListType = {
   filter: FilterType
 } & TodoListResponseType
 
-export type StatusType = 'idle' | 'loading' | 'success' | 'error'
+export type StatusType = 'idle' | 'loading' | 'success' | 'error';
+
+export type ResponseType = {
+  resultCode: number
+  messages: string[]
+  data: {
+    item: TodoListResponseType
+  }
+}

@@ -9,7 +9,6 @@ export const fetchTodolistsTC = (): AppThunkType => {
     try {
       dispatch(setLoadingAC())
       const res = await useRequest().getTodoLists();
-      console.log(res)
       dispatch(setTodoListsAC(res.data));
       dispatch(setSuccessAC())
     } catch (err) {
@@ -23,11 +22,15 @@ export const fetchAddTodolistTC = (title: string): AppThunkType => {
     try {
       dispatch(setLoadingAC())
       const res = await useRequest().addTodoListReq(title);
-      dispatch(AddTodoAC(res.data.data.item.id, title))
-      dispatch(AddNewArrayAC(res.data.data.item.id))
-      dispatch(setSuccessAC())
+      if(res.data.resultCode === 0){
+        dispatch(AddTodoAC(res.data.data.item.id, title))
+        dispatch(AddNewArrayAC(res.data.data.item.id))
+        dispatch(setSuccessAC())
+      } else {
+        dispatch(setErrorAC(res.data.messages[0]))
+      }
     } catch (err) {
-      console.log(err)
+      dispatch(setErrorAC('Error!'))
     }
   }
 }
@@ -35,21 +38,26 @@ export const fetchAddTodolistTC = (title: string): AppThunkType => {
 export const fetchRemoveTodolistTC = (todoId: string): AppThunkType => {
   return async dispatch => {
     try {
+      dispatch(setLoadingAC());
       await useRequest().removeTodoListReq(todoId);
-      dispatch(RemoveTodoAC(todoId))
+      dispatch(RemoveTodoAC(todoId));
+      dispatch(setSuccessAC());
     } catch (err) {
-      console.log(err)
+      dispatch(setErrorAC('Error!'));
     }
-  }
+  };
 };
 
 export const fetchUpdateTodolistTC = (todoId: string, title: string): AppThunkType => {
   return async dispatch => {
     try {
+      dispatch(setLoadingAC())
       await useRequest().updateTodoListReq(todoId, title);
       dispatch(EditTodoAC(todoId, title))
+      dispatch(setSuccessAC())
     } catch (err) {
       console.log(err)
+      dispatch(setErrorAC('Error!'))
     }
   }
 }

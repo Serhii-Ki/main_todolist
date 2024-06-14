@@ -16,7 +16,7 @@ export const useTask = (todoId: string, taskId: string, taskTitle: string) => {
   }
 
   const removeTask = () => {
-    dispatch(fetchRemoveTaskTC(todoId, taskId))
+    return dispatch(fetchRemoveTaskTC(todoId, taskId))
   }
 
   const changeCompleted = () => {

@@ -54,8 +54,7 @@ export const useTodoList = (todoId: string = '', titleTodo: string = '', filter:
   }
 
   const removeTodoList = () => {
-
-    dispatch(fetchRemoveTodolistTC(todoId))
+    return dispatch(fetchRemoveTodolistTC(todoId))
   }
 
   const changeFiler = (filter: FilterType) => {
