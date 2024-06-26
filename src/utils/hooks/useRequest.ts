@@ -17,10 +17,10 @@ function useRequest() {
 
   const getTodoLists = async () => {
     try {
-      const res = await instance.get<TodoListResponse[]>('todo-lists')
-      return res.data
+      const res = await instance.get<TodoListResponse[]>('todo-lists');
+      return res.data;
     } catch (err) {
-      return errorHandler(err)
+      return errorHandler(err);
     }
   }
 

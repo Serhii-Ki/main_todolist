@@ -22,9 +22,9 @@ function EditSpan(props: EditSpanPropsType) {
     return (
       <Box display='flex' alignItems='center'>
         {props.typeText === 'task' ?
-            <Typography variant="h5">{props.title}</Typography>
-            : <Typography variant="h4">{props.title}</Typography>}
-        <IconButton aria-label="Edit item">
+            <Typography variant="h5" onDoubleClick={props.setInputMode}>{props.title}</Typography>
+            : <Typography variant="h4" onDoubleClick={props.setInputMode}>{props.title}</Typography>}
+        <IconButton aria-label="Edit item" onClick={props.setInputMode}>
           <EditIcon/>
         </IconButton>
         <IconButton aria-label="Edit item">
@@ -37,9 +37,11 @@ function EditSpan(props: EditSpanPropsType) {
   const inputMode = () => {
     return (
       <Box>
-        <CustomInput size={"small"}/>
-        <CustomBtn title={'confirm'}/>
-        <CustomBtn title={'cancel'}/>
+        <CustomInput size={"small"} fullWidth={true}/>
+        <Box display='flex' justifyContent='center' gap='30px' marginY='10px'>
+          <CustomBtn title={'confirm'}/>
+          <CustomBtn title={'cancel'} onClick={props.setSpanMode}/>
+        </Box>
       </Box>
     )
   }

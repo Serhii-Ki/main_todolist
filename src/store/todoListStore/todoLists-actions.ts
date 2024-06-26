@@ -10,5 +10,5 @@ export const setTodoListAC = (todoLists: TodoListResponse[]) => {
     payload: {
       todoLists
     }
-  }
+  } as const
 }

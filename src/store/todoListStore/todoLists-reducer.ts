@@ -1,7 +1,6 @@
 import {TodoListActionsType} from "./todoLists-actions.ts";
 
-
-type FilterType = 'all' | 'active' | 'complete';
+export type FilterType = 'all' | 'active' | 'complete';
 
 export type TodoListResponse = {
   id: string
@@ -10,7 +9,7 @@ export type TodoListResponse = {
   title: string
 }
 
-type TodoListType = {
+export type TodoListType = {
   filter: FilterType
 } & TodoListResponse
 
