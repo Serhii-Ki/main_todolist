@@ -26,6 +26,11 @@ export const tasksReducer = (state: TasksType = {}, action: TasksActionsType) =>
         ...state,
         [action.payload.todoId]: action.payload.tasks
       }
+    case "SET_TASKS":
+      return action.payload.todoLists.reduce((acc, item) => {
+        acc[item.id] = [];
+        return acc;
+      }, state)
     default:
       return state
   }

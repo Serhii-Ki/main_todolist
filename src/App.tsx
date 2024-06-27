@@ -2,16 +2,16 @@ import {Box, Container, Grid, LinearProgress} from "@mui/material";
 import AddItemForm from "./components/addItemForm/AddItemForm.tsx";
 import {useEffect} from "react";
 import {getTodoListsTC} from "./store/todoListStore/todoLists-thunk.ts";
-import {useAppDispatch} from "./store/store.ts";
-import {useSelector} from "react-redux";
-import {getAppState, getTodoLists} from "./store/selectors.ts";
+import {useAppDispatch, useAppSelector} from "./store/store.ts";
+import {getAppState} from "./store/selectors.ts";
 import TodoList from "./components/todoList/TodoList.tsx";
 import CustomAppBar from "./components/appBar/AppBar.tsx";
+import {TodoListType} from "./store/todoListStore/todoLists-reducer.ts";
 
 function App() {
   const dispatch = useAppDispatch();
-  const todoLists = useSelector(getTodoLists);
-  const appState = useSelector(getAppState);
+  const todoLists = useAppSelector<TodoListType[]>(state => state.todoLists);
+  const appState = useAppSelector(getAppState);
 
   useEffect(() => {
     dispatch(getTodoListsTC())
@@ -32,6 +32,7 @@ function App() {
               return <TodoList
                   key={todo.id}
                   title={todo.title}
+                  todoId={todo.id}
                   filter={todo.filter}
               />
             })}
