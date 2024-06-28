@@ -1,21 +1,29 @@
 import {Box, Container, Grid, LinearProgress} from "@mui/material";
 import AddItemForm from "./components/addItemForm/AddItemForm.tsx";
-import {useEffect} from "react";
-import {getTodoListsTC} from "./store/todoListStore/todoLists-thunk.ts";
+import {ChangeEvent, useEffect, useState} from "react";
+import {addTodoListTC, getTodoListsTC} from "./store/todoListStore/todoLists-thunk.ts";
 import {useAppDispatch, useAppSelector} from "./store/store.ts";
-import {getAppState} from "./store/selectors.ts";
+import {getAppState, getTodoLists} from "./store/selectors.ts";
 import TodoList from "./components/todoList/TodoList.tsx";
 import CustomAppBar from "./components/appBar/AppBar.tsx";
-import {TodoListType} from "./store/todoListStore/todoLists-reducer.ts";
 
 function App() {
+  const [inputTodo, setInputTodo] = useState<string>('');
   const dispatch = useAppDispatch();
-  const todoLists = useAppSelector<TodoListType[]>(state => state.todoLists);
+  const todoLists = useAppSelector(getTodoLists);
   const appState = useAppSelector(getAppState);
 
   useEffect(() => {
     dispatch(getTodoListsTC())
   }, []);
+
+  const onChangeTodoInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputTodo(e.target.value);
+  }
+
+  const addTodoList = () => {
+    dispatch(addTodoListTC(inputTodo))
+  }
 
   return (
     <>
@@ -25,9 +33,9 @@ function App() {
       </Box>
       <Box display='flex' flexDirection='column' alignItems='center' gap='20px' paddingTop='30px'>
         <h1>Add todo list</h1>
-        <AddItemForm label='add todo'/>
+        <AddItemForm label='add todo' value={inputTodo} onChange={onChangeTodoInput} onClick={addTodoList}/>
         <Container>
-          <Grid container spacing={2} marginTop='30px' justifyContent='center'>
+          <Grid container spacing={2} marginTop='30px' direction="row" alignItems="stretch">
             {todoLists.map((todo) => {
               return <TodoList
                   key={todo.id}

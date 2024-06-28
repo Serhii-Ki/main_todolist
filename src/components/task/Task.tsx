@@ -3,6 +3,7 @@ import {useState} from "react";
 
 type TaskPropsType = {
   title: string
+  status: number
 }
 
 function Task(props: TaskPropsType) {
@@ -23,6 +24,7 @@ function Task(props: TaskPropsType) {
           typeText={'task'}
           setSpanMode={setSpanMode}
           setInputMode={setInputMode}
+          status={props.status}
       />
   );
 }

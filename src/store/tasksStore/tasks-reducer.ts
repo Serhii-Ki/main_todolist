@@ -19,7 +19,7 @@ type TasksType = {
   [key: string]: TaskType[]
 }
 
-export const tasksReducer = (state: TasksType = {}, action: TasksActionsType) => {
+export const tasksReducer = (state: TasksType = {}, action: TasksActionsType): TasksType => {
   switch (action.type) {
     case "GET_TASKS":
       return {
@@ -28,9 +28,16 @@ export const tasksReducer = (state: TasksType = {}, action: TasksActionsType) =>
       }
     case "SET_TASKS":
       return action.payload.todoLists.reduce((acc, item) => {
-        acc[item.id] = [];
+        if(!state[item.id]){
+          acc[item.id] = [];
+        }
         return acc;
       }, state)
+    case "UPDATE_TASK":
+      return {
+        ...state,
+        [action.payload.todoId]: []
+      }
     default:
       return state
   }

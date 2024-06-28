@@ -1,4 +1,4 @@
-import {Box, IconButton, Typography} from "@mui/material";
+import {Box, Checkbox, IconButton, Typography} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CustomInput from "../customInput/CustomInput.tsx";
@@ -14,6 +14,7 @@ type EditSpanPropsType = {
   title: string
   setSpanMode: () => void
   setInputMode: () => void
+  status?: number
 }
 
 function EditSpan(props: EditSpanPropsType) {
@@ -22,12 +23,15 @@ function EditSpan(props: EditSpanPropsType) {
     return (
       <Box display='flex' alignItems='center'>
         {props.typeText === 'task' ?
-            <Typography variant="h5" onDoubleClick={props.setInputMode}>{props.title}</Typography>
+            <Box display='flex' alignItems='center'>
+              <Checkbox checked={!!props.status}/>
+              <Typography variant="h6" onDoubleClick={props.setInputMode}>{props.title}</Typography>
+            </Box>
             : <Typography variant="h4" onDoubleClick={props.setInputMode}>{props.title}</Typography>}
         <IconButton aria-label="Edit item" onClick={props.setInputMode}>
           <EditIcon/>
         </IconButton>
-        <IconButton aria-label="Edit item">
+        <IconButton aria-label="Delete item">
           <DeleteIcon/>
         </IconButton>
       </Box>

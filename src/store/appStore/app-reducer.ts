@@ -10,7 +10,7 @@ const initialState: AppStateType = {
   loadStatus: 'idle'
 }
 
-export const appReducer = (state: AppStateType = initialState, action: AppActionsType) => {
+export const appReducer = (state: AppStateType = initialState, action: AppActionsType): AppStateType => {
   switch (action.type) {
     case "SET-LOADING-STATUS":
       return {
