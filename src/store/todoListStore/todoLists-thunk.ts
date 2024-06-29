@@ -1,6 +1,6 @@
 import {Dispatch} from "redux";
 import useRequest from "../../utils/hooks/useRequest.ts";
-import {addTodoListAC, setTodoListAC} from "./todoLists-actions.ts";
+import {addTodoListAC, deleteTodoListAC, setTodoListAC} from "./todoLists-actions.ts";
 import {setFailedStatus, setLoadingStatusAC, setSuccessedStatus} from "../appStore/app-actions.ts";
 import {setTasksAC, updateTaskAC} from "../tasksStore/tasks-actions.ts";
 
@@ -27,6 +27,20 @@ export const addTodoListTC = (title: string) => {
       dispatch(updateTaskAC(res.data.item.id))
     } catch (err) {
       console.log(err)
+    }
+  }
+}
+
+export const deleteTodoListTC = (todoId: string) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      dispatch(setLoadingStatusAC())
+      await useRequest().fetchDeleteTodoList(todoId)
+      dispatch(deleteTodoListAC(todoId))
+      dispatch(setSuccessedStatus())
+    } catch (err) {
+      console.log(err)
+      dispatch(setFailedStatus())
     }
   }
 }

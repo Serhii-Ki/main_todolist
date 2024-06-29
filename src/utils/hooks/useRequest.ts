@@ -2,6 +2,12 @@ import axios from 'axios'
 import {TodoListResponse} from "../../store/todoListStore/todoLists-reducer.ts";
 import {TaskType} from "../../store/tasksStore/tasks-reducer.ts";
 
+type GetTasksResponseType = {
+  error: null
+  items: TaskType[]
+  totalCount: number
+}
+
 type CreateTodolistResponseType = {
   resultCode: number
   messages: string[]
@@ -19,7 +25,15 @@ type FieldErrorType = {
 type CreateTaskResponseType = {
   resultCode: number
   messages: string[]
-  data: TaskType
+  data: {
+    item: TaskType
+  }
+}
+
+type ResponseType<D = unknown> = {
+  resultCode: number
+  messages: string[]
+  data: D
 }
 
 function useRequest() {
@@ -37,7 +51,7 @@ function useRequest() {
   }
 
   const fetchGetTasks = (todoId: string) => {
-    return instance.get<TaskType[]>(`todo-lists/${todoId}/tasks`)
+    return instance.get<GetTasksResponseType>(`todo-lists/${todoId}/tasks`)
         .then(res => res.data)
   }
 
@@ -51,11 +65,23 @@ function useRequest() {
         .then(res => res.data)
   }
 
+  const fetchDeleteTodoList = (todoId: string) => {
+    return instance.delete<ResponseType>(`todo-lists/${todoId}`)
+        .then(res => res.data)
+  }
+
+  const fetchDeleteTask = (todoId: string, taskId: string) => {
+    return instance.delete<ResponseType>(`todo-lists/${todoId}/tasks/${taskId}`)
+       .then(res => res.data)
+  }
+
   return {
     fetchGetTodoLists,
     fetchGetTasks,
     fetchAddTodoList,
-    fetchAddTask
+    fetchAddTask,
+    fetchDeleteTodoList,
+    fetchDeleteTask
   }
 
 }

@@ -3,7 +3,8 @@ import {FilterType, TodoListResponse} from "./todoLists-reducer.ts";
 export type TodoListActionsType =
     SetTodoListActionsType
     | AddTodoListActionsType
-    | ChangeFilterActionsType;
+    | ChangeFilterActionsType
+    | DeleteTodoListActionsType;
 
 type SetTodoListActionsType = ReturnType<typeof setTodoListAC>;
 
@@ -35,6 +36,17 @@ export const changeFilterAC = (todoId: string, filter: FilterType) => {
     payload: {
       todoId,
       filter
+    }
+  } as const
+}
+
+type DeleteTodoListActionsType = ReturnType<typeof deleteTodoListAC>
+
+export const deleteTodoListAC = (todoId: string) => {
+  return {
+    type: 'DELETE-TODO-LIST',
+    payload: {
+      todoId
     }
   } as const
 }

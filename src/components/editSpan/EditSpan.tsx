@@ -14,6 +14,7 @@ type EditSpanPropsType = {
   title: string
   setSpanMode: () => void
   setInputMode: () => void
+  deleteItem?: () => void
   status?: number
 }
 
@@ -31,7 +32,7 @@ function EditSpan(props: EditSpanPropsType) {
         <IconButton aria-label="Edit item" onClick={props.setInputMode}>
           <EditIcon/>
         </IconButton>
-        <IconButton aria-label="Delete item">
+        <IconButton aria-label="Delete item" onClick={props.deleteItem}>
           <DeleteIcon/>
         </IconButton>
       </Box>

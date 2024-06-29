@@ -22,7 +22,12 @@ function App() {
   }
 
   const addTodoList = () => {
-    dispatch(addTodoListTC(inputTodo))
+    if(inputTodo.trim()){
+      dispatch(addTodoListTC(inputTodo))
+      setInputTodo('')
+    } else {
+      return
+    }
   }
 
   return (

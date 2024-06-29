@@ -21,6 +21,8 @@ export const todoListReducer = (state: TodoListType[] = [], action: TodoListActi
       return [{...action.payload.todoList, filter: 'all'}, ...state];
     case "CHANGE-FILTER":
       return state.map(todoList => todoList.id === action.payload.todoId? {...todoList, filter: action.payload.filter} : todoList);
+    case "DELETE-TODO-LIST":
+      return state.filter(todoList => todoList.id!== action.payload.todoId);
     default:
       return state
   }

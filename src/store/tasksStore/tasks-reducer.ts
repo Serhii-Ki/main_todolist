@@ -38,6 +38,16 @@ export const tasksReducer = (state: TasksType = {}, action: TasksActionsType): T
         ...state,
         [action.payload.todoId]: []
       }
+    case "ADD_TASK":
+      return {
+        ...state,
+        [action.payload.todoId]: [action.payload.task, ...state[action.payload.todoId]]
+      }
+    case "DELETE_TASK":
+      return {
+        ...state,
+        [action.payload.todoId]: state[action.payload.todoId].filter(task => task.id!== action.payload.taskId)
+      }
     default:
       return state
   }

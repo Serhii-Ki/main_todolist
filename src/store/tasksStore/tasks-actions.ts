@@ -4,7 +4,9 @@ import {TodoListResponse} from "../todoListStore/todoLists-reducer.ts";
 export type TasksActionsType =
     GetTasksActionsType
     | SetTasksActionsType
-    | UpdateTaskActionsType;
+    | UpdateTaskActionsType 
+    | AddTaskActionsType
+    | DeleteTaskActionsType;
 
 type GetTasksActionsType = ReturnType<typeof getTasksAC>;
 
@@ -36,6 +38,30 @@ export const updateTaskAC = (todoId: string) => {
     type: 'UPDATE_TASK',
     payload: {
       todoId
+    }
+  } as const
+}
+
+type AddTaskActionsType = ReturnType<typeof addTaskAC>
+
+export const addTaskAC = (todoId: string, task: TaskType) => {
+  return {
+    type: 'ADD_TASK',
+    payload: {
+      todoId,
+      task
+    }
+  } as const
+}
+
+type DeleteTaskActionsType = ReturnType<typeof deleteTaskAC>
+
+export const deleteTaskAC = (todoId: string, taskId: string) => {
+  return {
+    type: 'DELETE_TASK',
+    payload: {
+      todoId,
+      taskId
     }
   } as const
 }

@@ -1,14 +1,15 @@
 import {Box, Grid, Paper} from "@mui/material";
 import AddItemForm from "../addItemForm/AddItemForm.tsx";
 import EditSpan, {ViewModeType} from "../editSpan/EditSpan.tsx";
-import {useEffect, useState} from "react";
+import {ChangeEvent, useEffect, useState} from "react";
 import CustomBtn from "../customBtn/CustomBtn.tsx";
 import {FilterType} from "../../store/todoListStore/todoLists-reducer.ts";
 import {AppRootStateType, useAppDispatch, useAppSelector} from "../../store/store.ts";
 import Task from "../task/Task.tsx";
 import {getTasks, getTodoLists} from "../../store/selectors.ts";
-import {getTasksTC} from "../../store/tasksStore/tasks-thunk.ts";
+import {addTaskTC, getTasksTC} from "../../store/tasksStore/tasks-thunk.ts";
 import {changeFilterAC} from "../../store/todoListStore/todoLists-actions.ts";
+import {deleteTodoListTC} from "../../store/todoListStore/todoLists-thunk.ts";
 
 type TodoListPropsType = {
   title: string
@@ -18,6 +19,7 @@ type TodoListPropsType = {
 
 function TodoList(props: TodoListPropsType) {
   const [viewMode, setViewMode] = useState<ViewModeType>('span');
+  const [inputTask, setInputTask] = useState<string>('')
   const tasks = useAppSelector((state: AppRootStateType) => getTasks(state, props.todoId));
   const filter = useAppSelector(getTodoLists).find(todo => todo.id === props.todoId)?.filter
   const dispatch = useAppDispatch();
@@ -48,14 +50,49 @@ function TodoList(props: TodoListPropsType) {
     }
   }
 
+  const onChangeInputTask = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputTask(e.target.value)
+  }
+
+  const addTask = () => {
+    if(inputTask.trim()){
+      dispatch(addTaskTC(props.todoId, inputTask))
+      setInputTask('')
+    } else {
+      return
+    }
+  }
+
+  const deleteTodoList = () => {
+    dispatch(deleteTodoListTC(props.todoId))
+  }
+
   return (
     <Grid item alignItems='stretch'>
       <Paper square={false} style={{padding: '20px 30px', height: '100%'}}>
         <Box display='flex' flexDirection='column' alignItems='center' gap='20px'>
-          <EditSpan viewMode={viewMode} typeText={'todo'} title={props.title} setSpanMode={setSpanMode} setInputMode={setInputMode}/>
-          <AddItemForm label={'add task'}/>
+          <EditSpan
+              viewMode={viewMode}
+              typeText={'todo'}
+              title={props.title}
+              setSpanMode={setSpanMode}
+              setInputMode={setInputMode}
+              deleteItem={deleteTodoList}
+          />
+          <AddItemForm
+              label={'add task'}
+              value={inputTask}
+              onChange={onChangeInputTask}
+              onClick={addTask}
+          />
           {filteredTasks().map(task => {
-            return <Task key={task.id} title={task.title} status={task.status}/>
+            return <Task
+                key={task.id}
+                title={task.title}
+                status={task.status}
+                todoId={props.todoId}
+                taskId={task.id}
+            />
           })}
           <Box display='flex' gap='10px'>
             <CustomBtn title={'all'} onClick={() => changefilter('all')} color={props.filter === 'all' ? 'success' : 'primary'}/>
