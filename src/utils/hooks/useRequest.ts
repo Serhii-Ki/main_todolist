@@ -47,32 +47,34 @@ function useRequest() {
 
   const fetchGetTodoLists =  () => {
     return instance.get<TodoListResponse[]>('todo-lists')
-        .then(res => res.data)
   }
 
   const fetchGetTasks = (todoId: string) => {
     return instance.get<GetTasksResponseType>(`todo-lists/${todoId}/tasks`)
-        .then(res => res.data)
   }
 
   const fetchAddTodoList = (title: string) => {
     return instance.post<CreateTodolistResponseType>('todo-lists', {title})
-        .then(res => res.data)
   }
 
   const fetchAddTask = (todoId: string, title: string) => {
     return instance.post<CreateTaskResponseType>(`todo-lists/${todoId}/tasks`, {title})
-        .then(res => res.data)
   }
 
   const fetchDeleteTodoList = (todoId: string) => {
     return instance.delete<ResponseType>(`todo-lists/${todoId}`)
-        .then(res => res.data)
   }
 
   const fetchDeleteTask = (todoId: string, taskId: string) => {
     return instance.delete<ResponseType>(`todo-lists/${todoId}/tasks/${taskId}`)
-       .then(res => res.data)
+  }
+
+  const fetchUpdateTodoList = (todoId: string, title: string) => {
+    return instance.put<ResponseType>(`todo-lists/${todoId}`, {title})
+  }
+
+  const fetchUpdateTask = (todoId: string, taskId: string, data: TaskType) => {
+    return instance.put<ResponseType>(`todo-lists/${todoId}/tasks/${taskId}`, data)
   }
 
   return {
@@ -81,7 +83,9 @@ function useRequest() {
     fetchAddTodoList,
     fetchAddTask,
     fetchDeleteTodoList,
-    fetchDeleteTask
+    fetchDeleteTask,
+    fetchUpdateTodoList,
+    fetchUpdateTask
   }
 
 }

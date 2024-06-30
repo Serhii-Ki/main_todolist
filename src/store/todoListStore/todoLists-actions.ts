@@ -4,7 +4,8 @@ export type TodoListActionsType =
     SetTodoListActionsType
     | AddTodoListActionsType
     | ChangeFilterActionsType
-    | DeleteTodoListActionsType;
+    | DeleteTodoListActionsType
+    | UpdateTodoListActionsType;
 
 type SetTodoListActionsType = ReturnType<typeof setTodoListAC>;
 
@@ -47,6 +48,18 @@ export const deleteTodoListAC = (todoId: string) => {
     type: 'DELETE-TODO-LIST',
     payload: {
       todoId
+    }
+  } as const
+}
+
+type UpdateTodoListActionsType = ReturnType<typeof updateTodoListAC>
+
+export const updateTodoListAC = (todoId: string, title: string) => {
+  return {
+    type: 'UPDATE-TODO-LIST',
+    payload: {
+      todoId,
+      title
     }
   } as const
 }

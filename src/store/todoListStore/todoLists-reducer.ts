@@ -20,9 +20,15 @@ export const todoListReducer = (state: TodoListType[] = [], action: TodoListActi
     case "ADD-TODO-LIST":
       return [{...action.payload.todoList, filter: 'all'}, ...state];
     case "CHANGE-FILTER":
-      return state.map(todoList => todoList.id === action.payload.todoId? {...todoList, filter: action.payload.filter} : todoList);
+      return state.map(todoList => todoList.id === action.payload.todoId
+          ? {...todoList, filter: action.payload.filter}
+          : todoList);
     case "DELETE-TODO-LIST":
       return state.filter(todoList => todoList.id!== action.payload.todoId);
+    case "UPDATE-TODO-LIST":
+      return state.map(todoList => todoList.id === action.payload.todoId
+          ? {...todoList, title: action.payload.title}
+          : todoList);
     default:
       return state
   }

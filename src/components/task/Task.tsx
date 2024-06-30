@@ -12,6 +12,7 @@ type TaskPropsType = {
 
 function Task(props: TaskPropsType) {
   const [viewMode, setViewMode] = useState<ViewModeType>('span');
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const dispatch = useAppDispatch();
 
   const setSpanMode = () => {
@@ -23,7 +24,14 @@ function Task(props: TaskPropsType) {
   }
 
   const deleteTask = () => {
-    dispatch(deleteTaskTC(props.todoId, props.taskId))
+    setIsLoading(true)
+    dispatch(deleteTaskTC(props.todoId, props.taskId)).finally(() => {
+      setIsLoading(false)
+    })
+  }
+
+  const updateTask = (title: string) => {
+
   }
 
   return (
@@ -35,6 +43,8 @@ function Task(props: TaskPropsType) {
           setInputMode={setInputMode}
           status={props.status}
           deleteItem={deleteTask}
+          isLoading={isLoading}
+          updateItem={updateTask}
       />
   );
 }

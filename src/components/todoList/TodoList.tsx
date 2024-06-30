@@ -9,7 +9,7 @@ import Task from "../task/Task.tsx";
 import {getTasks, getTodoLists} from "../../store/selectors.ts";
 import {addTaskTC, getTasksTC} from "../../store/tasksStore/tasks-thunk.ts";
 import {changeFilterAC} from "../../store/todoListStore/todoLists-actions.ts";
-import {deleteTodoListTC} from "../../store/todoListStore/todoLists-thunk.ts";
+import {deleteTodoListTC, updateTodoListTC} from "../../store/todoListStore/todoLists-thunk.ts";
 
 type TodoListPropsType = {
   title: string
@@ -20,6 +20,7 @@ type TodoListPropsType = {
 function TodoList(props: TodoListPropsType) {
   const [viewMode, setViewMode] = useState<ViewModeType>('span');
   const [inputTask, setInputTask] = useState<string>('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const tasks = useAppSelector((state: AppRootStateType) => getTasks(state, props.todoId));
   const filter = useAppSelector(getTodoLists).find(todo => todo.id === props.todoId)?.filter
   const dispatch = useAppDispatch();
@@ -36,7 +37,7 @@ function TodoList(props: TodoListPropsType) {
     dispatch(getTasksTC(props.todoId))
   }, []);
 
-  const changefilter = (filter: FilterType) => {
+  const changeFilter = (filter: FilterType) => {
     dispatch(changeFilterAC(props.todoId, filter))
   }
 
@@ -64,7 +65,19 @@ function TodoList(props: TodoListPropsType) {
   }
 
   const deleteTodoList = () => {
-    dispatch(deleteTodoListTC(props.todoId))
+    setIsLoading(true)
+    dispatch(deleteTodoListTC(props.todoId)).finally(() => {
+      setIsLoading(false)
+    })
+  }
+
+  const updateTodoList = (title: string) => {
+    if(title.trim()){
+      dispatch(updateTodoListTC(props.todoId, title))
+          .then(() => setSpanMode())
+    }else{
+      return
+    }
   }
 
   return (
@@ -78,6 +91,8 @@ function TodoList(props: TodoListPropsType) {
               setSpanMode={setSpanMode}
               setInputMode={setInputMode}
               deleteItem={deleteTodoList}
+              isLoading={isLoading}
+              updateItem={updateTodoList}
           />
           <AddItemForm
               label={'add task'}
@@ -95,9 +110,9 @@ function TodoList(props: TodoListPropsType) {
             />
           })}
           <Box display='flex' gap='10px'>
-            <CustomBtn title={'all'} onClick={() => changefilter('all')} color={props.filter === 'all' ? 'success' : 'primary'}/>
-            <CustomBtn title={'active'} onClick={() => changefilter('active')} color={props.filter === 'active' ? 'success' : 'primary'}/>
-            <CustomBtn title={'complete'} onClick={() => changefilter('complete')} color={props.filter === 'complete' ? 'success' : 'primary'}/>
+            <CustomBtn title={'all'} onClick={() => changeFilter('all')} color={props.filter === 'all' ? 'success' : 'primary'}/>
+            <CustomBtn title={'active'} onClick={() => changeFilter('active')} color={props.filter === 'active' ? 'success' : 'primary'}/>
+            <CustomBtn title={'complete'} onClick={() => changeFilter('complete')} color={props.filter === 'complete' ? 'success' : 'primary'}/>
           </Box>
         </Box>
       </Paper>
