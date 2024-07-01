@@ -17,6 +17,7 @@ type EditSpanPropsType = {
   setInputMode: () => void
   deleteItem: () => void
   updateItem: (title: string) => void
+  onChangeStatus?: () => void
   status?: number
   isLoading: boolean
 }
@@ -37,7 +38,7 @@ function EditSpan(props: EditSpanPropsType) {
       <Box display='flex' alignItems='center'>
         {props.typeText === 'task' ?
             <Box display='flex' alignItems='center'>
-              <Checkbox checked={!!props.status} disabled={props.isLoading}/>
+              <Checkbox checked={!!props.status} disabled={props.isLoading} onClick={props.onChangeStatus}/>
               <Typography variant="h6" onDoubleClick={props.setInputMode}>{props.title}</Typography>
             </Box>
             : <Typography variant="h4" onDoubleClick={props.setInputMode}>{props.title}</Typography>}

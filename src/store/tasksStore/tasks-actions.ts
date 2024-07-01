@@ -6,7 +6,8 @@ export type TasksActionsType =
     | SetTasksActionsType
     | UpdateTaskActionsType 
     | AddTaskActionsType
-    | DeleteTaskActionsType;
+    | DeleteTaskActionsType
+    | UpdateTaskDateActionsType;
 
 type GetTasksActionsType = ReturnType<typeof getTasksAC>;
 
@@ -62,6 +63,20 @@ export const deleteTaskAC = (todoId: string, taskId: string) => {
     payload: {
       todoId,
       taskId
+    }
+  } as const
+}
+
+type UpdateTaskDateActionsType = ReturnType<typeof updateTaskDateAC>
+
+export const updateTaskDateAC = (todoId: string, taskId: string, title: string, status: number | null) => {
+  return {
+    type: 'UPDATE_TASK_DATE',
+    payload: {
+      todoId,
+      taskId,
+      title,
+      status
     }
   } as const
 }

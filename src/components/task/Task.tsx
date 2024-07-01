@@ -1,7 +1,7 @@
 import EditSpan, {ViewModeType} from "../editSpan/EditSpan.tsx";
 import {useState} from "react";
 import {useAppDispatch} from "../../store/store.ts";
-import {deleteTaskTC} from "../../store/tasksStore/tasks-thunk.ts";
+import {deleteTaskTC, updateTaskDateTC} from "../../store/tasksStore/tasks-thunk.ts";
 
 type TaskPropsType = {
   title: string
@@ -31,7 +31,12 @@ function Task(props: TaskPropsType) {
   }
 
   const updateTask = (title: string) => {
+    setSpanMode()
+    dispatch(updateTaskDateTC(props.todoId, props.taskId, title, null))
+  }
 
+  const onChangeTaskStatus = () => {
+    dispatch(updateTaskDateTC(props.todoId, props.taskId, 'some', 1))
   }
 
   return (
@@ -45,6 +50,7 @@ function Task(props: TaskPropsType) {
           deleteItem={deleteTask}
           isLoading={isLoading}
           updateItem={updateTask}
+          onChangeStatus={onChangeTaskStatus}
       />
   );
 }

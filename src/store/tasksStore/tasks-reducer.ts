@@ -1,6 +1,5 @@
 import {TasksActionsType} from "./tasks-actions.ts";
 
-
 export type TaskType = {
   description: string
   title: string
@@ -47,6 +46,22 @@ export const tasksReducer = (state: TasksType = {}, action: TasksActionsType): T
       return {
         ...state,
         [action.payload.todoId]: state[action.payload.todoId].filter(task => task.id!== action.payload.taskId)
+      }
+    case "UPDATE_TASK_DATE":
+      if(action.payload.status !== null){
+        return {
+          ...state,
+          [action.payload.todoId]: state[action.payload.todoId].map(task => task.id === action.payload.taskId
+           ? {...task, status: task.status === 0 ? 1 : 0}
+            : task)
+        }
+      } else {
+        return {
+          ...state,
+          [action.payload.todoId]: state[action.payload.todoId].map(task => task.id === action.payload.taskId
+           ? {...task, title: action.payload.title}
+            : task)
+        }
       }
     default:
       return state

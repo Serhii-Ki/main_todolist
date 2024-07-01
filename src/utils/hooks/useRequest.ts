@@ -36,6 +36,16 @@ type ResponseType<D = unknown> = {
   data: D
 }
 
+type updateTaskResponseType = {
+  title: string
+  description: string
+  completed: boolean
+  status: number
+  priority: number
+  startDate: Date
+  deadline: Date
+}
+
 function useRequest() {
   const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -73,8 +83,8 @@ function useRequest() {
     return instance.put<ResponseType>(`todo-lists/${todoId}`, {title})
   }
 
-  const fetchUpdateTask = (todoId: string, taskId: string, data: TaskType) => {
-    return instance.put<ResponseType>(`todo-lists/${todoId}/tasks/${taskId}`, data)
+  const fetchUpdateTask = (todoId: string, taskId: string, data: updateTaskResponseType) => {
+    return instance.put<ResponseType>(`todo-lists/${todoId}/taskss/${taskId}`, data)
   }
 
   return {
