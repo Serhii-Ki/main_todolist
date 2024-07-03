@@ -7,6 +7,7 @@ import {getAppState, getTodoLists} from "./store/selectors.ts";
 import TodoList from "./components/todoList/TodoList.tsx";
 import CustomAppBar from "./components/appBar/AppBar.tsx";
 import CustomSnackbar from "./components/snackbar/CustomSnackBar.tsx";
+import Test from "./components/test/Test.tsx";
 
 function App() {
   const [inputTodo, setInputTodo] = useState<string>('');
@@ -54,6 +55,7 @@ function App() {
           <CustomSnackbar/>
         </Container>
       </Box>
+      <Test/>
     </>
   )
 }

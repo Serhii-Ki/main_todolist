@@ -1,7 +1,5 @@
 import * as React from 'react';
 import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import {useAppSelector} from "../../store/store.ts";
 import {getAppState} from "../../store/selectors.ts";
 import {useEffect} from "react";
@@ -24,19 +22,6 @@ export default function CustomSnackbar() {
 
     setOpen(false);
   };
-
-  // const action = (
-  //     <>
-  //       <IconButton
-  //           size="small"
-  //           aria-label="close"
-  //           color="inherit"
-  //           onClick={handleClose}
-  //       >
-  //         <CloseIcon fontSize="small" />
-  //       </IconButton>
-  //     </>
-  // );
 
   return (
       <div>
