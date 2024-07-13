@@ -20,10 +20,10 @@ function SignUp() {
   })
 
   return (
-      <Box display='flex' justifyContent='center' alignItems='center' height='100vh'>
-        <Paper style={{padding: '30px'}}>
+      <Box display='flex' justifyContent='center' marginTop='200px'>
+        <Paper style={{padding: '30px 50px'}} elevation={3}>
           <form onSubmit={formik.handleSubmit}>
-            <FormGroup>
+            <FormGroup sx={{gap: '20px'}}>
               <CustomInput
                   type={'email'}
                   label="Email"

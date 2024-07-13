@@ -46,6 +46,13 @@ type updateTaskResponseType = {
   deadline: Date
 }
 
+type SignupDataType = {
+  email: string
+  password: string
+  confirm_password: string
+  rememberMe: boolean
+}
+
 function useRequest() {
   const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -54,6 +61,10 @@ function useRequest() {
       'API-KEY': '51768207-6c1b-4ce3-8f65-309bb8749f38',
     },
   });
+
+  const fetchSignUp = (signupData: SignupDataType) => {
+    return instance.post<ResponseType>('auth/login', signupData)
+  }
 
   const fetchGetTodoLists =  () => {
     return instance.get<TodoListResponse[]>('todo-lists')
@@ -88,6 +99,7 @@ function useRequest() {
   }
 
   return {
+    fetchSignUp,
     fetchGetTodoLists,
     fetchGetTasks,
     fetchAddTodoList,
