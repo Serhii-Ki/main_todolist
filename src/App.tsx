@@ -3,6 +3,7 @@ import {useAppSelector} from "./store/store.ts";
 import {getAppState,} from "./store/selectors.ts";
 import CustomAppBar from "./components/appBar/AppBar.tsx";
 import {Outlet} from "react-router-dom";
+import CustomSnackbar from "./components/snackbar/CustomSnackBar.tsx";
 
 function App() {
   const appState = useAppSelector(getAppState);
@@ -14,6 +15,7 @@ function App() {
         {appState.loadStatus === 'loading' && <LinearProgress color="success" style={{position: 'absolute', bottom: '0', left: '0', right: '0'}}/>}
       </Box>
       <Outlet/>
+      <CustomSnackbar/>
     </>
   )
 }

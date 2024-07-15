@@ -1,8 +1,6 @@
-
 import AddItemForm from "../components/addItemForm/AddItemForm.tsx";
 import {Box, Container, Grid} from "@mui/material";
 import TodoList from "../components/todoList/TodoList.tsx";
-import CustomSnackbar from "../components/snackbar/CustomSnackBar.tsx";
 import {ChangeEvent, useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../store/store.ts";
 import {getTodoLists} from "../store/selectors.ts";
@@ -44,7 +42,6 @@ function TodoPage() {
               />
             })}
           </Grid>
-          <CustomSnackbar/>
         </Container>
       </Box>
   );

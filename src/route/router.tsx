@@ -11,7 +11,7 @@ export const router = createBrowserRouter([{
   children:[
     {
       index: true,
-      element: <Navigate to="/signup"/>,
+      element: <Navigate to="/signin"/>,
     },
     {
       path: '/todolist',

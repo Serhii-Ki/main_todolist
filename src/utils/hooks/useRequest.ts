@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 import {TodoListResponse} from "../../store/todoListStore/todoLists-reducer.ts";
 import {TaskType} from "../../store/tasksStore/tasks-reducer.ts";
 
@@ -53,6 +53,12 @@ type SignupDataType = {
   rememberMe: boolean
 }
 
+export type SigninDataType = {
+  email: string
+  password: string
+  rememberMe: boolean
+}
+
 function useRequest() {
   const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -64,6 +70,14 @@ function useRequest() {
 
   const fetchSignUp = (signupData: SignupDataType) => {
     return instance.post<ResponseType>('auth/login', signupData)
+  }
+
+  const fetchSignIn = (signinData: SigninDataType) => {
+    return instance.post<ResponseType>('auth/login', signinData)
+  }
+
+  const fetchLogOut = () => {
+    return instance.delete<ResponseType>('auth/logout')
   }
 
   const fetchGetTodoLists =  () => {
@@ -100,6 +114,8 @@ function useRequest() {
 
   return {
     fetchSignUp,
+    fetchSignIn,
+    fetchLogOut,
     fetchGetTodoLists,
     fetchGetTasks,
     fetchAddTodoList,

@@ -2,10 +2,20 @@ import CustomInput from "../../components/customInput/CustomInput.tsx";
 import CustomBtn from "../../components/customBtn/CustomBtn.tsx";
 import {Box, Checkbox, FormControlLabel, FormGroup, Paper} from "@mui/material";
 import {useFormik} from "formik";
-import {Link} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../../store/store.ts";
+import {signInTC} from "../../store/authStore/auth-thunk.ts";
+import {getAuthStatus} from "../../store/selectors.ts";
+
+type ErrorsValidateType = {
+  email?: string
+  password?: string
+}
 
 
 function SignIn() {
+  const dispatch = useAppDispatch();
+  const authStatus = useAppSelector(getAuthStatus)
 
   const formik = useFormik({
     initialValues: {
@@ -13,10 +23,32 @@ function SignIn() {
       password: '',
       rememberMe: false,
     },
-    onSubmit: values => {
-      alert(JSON.stringify(values))
+    validate: (values) => {
+      const errors: ErrorsValidateType = {};
+
+      if (!values.email) {
+        errors.email = 'Required';
+      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+        errors.email = 'Invalid email address';
+      }
+
+      if (!values.password) {
+        errors.password = 'Required';
+      } else if(values.password.length < 5) {
+        errors.password = 'Password must be at least 5 characters long';
+      }
+
+      return errors;
     },
-  })
+    onSubmit: values => {
+      dispatch(signInTC(values))
+      formik.resetForm();
+    },
+  });
+
+  if(authStatus) {
+    return <Navigate to={'/todolist'}/>
+  }
 
   return (
       <Box display='flex' justifyContent='center' marginTop='200px'>
@@ -26,24 +58,23 @@ function SignIn() {
               <CustomInput
                   type={'email'}
                   label="Email"
-                  name="email"
-                  onChange={formik.handleChange}
-                  value={formik.values.email}
+                  error={!!formik.errors.email}
+                  helperText={formik.errors.email}
+                  {...formik.getFieldProps('email')}
               />
               <CustomInput
                   type={'password'}
                   label="Password"
-                  name="password"
-                  onChange={formik.handleChange}
-                  value={formik.values.password}
+                  error={!!formik.errors.password}
+                  helperText={formik.errors.password}
+                  {...formik.getFieldProps('password')}
               />
               <FormControlLabel
                   label="Remember me"
                   control={
                     <Checkbox
-                        onChange={formik.handleChange}
                         checked={formik.values.rememberMe}
-                        name="rememberMe"
+                        {...formik.getFieldProps('rememberMe')}
                     />
                   }
               />
