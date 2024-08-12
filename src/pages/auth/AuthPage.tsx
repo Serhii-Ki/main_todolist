@@ -2,16 +2,22 @@ import Box from "@mui/material/Box";
 import { useFormik } from "formik";
 import CustomInput from "../../components/customInput/CustomInput.tsx";
 import CustomBtn from "../../components/customBtn/CustomBtn.tsx";
-import { Paper } from "@mui/material";
+import { Checkbox, FormControlLabel, Paper } from "@mui/material";
+import { useState } from "react";
+import { LoginPayloadType } from "../../utils/types/requestTypes.ts";
 
 function AuthPage() {
+  const [formValues, setFormValues] = useState<LoginPayloadType>({
+    email: "",
+    password: "",
+    rememberMe: false,
+  });
+
   const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
+    initialValues: formValues,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
+      setFormValues(values);
     },
   });
 
@@ -30,8 +36,15 @@ function AuthPage() {
             gap="30px"
             alignItems="center"
           >
-            <CustomInput label="Email" name="email" />
-            <CustomInput label="Password" name="password" />
+            <CustomInput {...formik.getFieldProps("email")} label="Email" />
+            <CustomInput
+              {...formik.getFieldProps("password")}
+              label="Password"
+            />
+            <FormControlLabel
+              control={<Checkbox {...formik.getFieldProps("rememberMe")} />}
+              label="rememberMe"
+            />
             <CustomBtn
               title={"confirm"}
               variant="contained"
