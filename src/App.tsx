@@ -20,7 +20,7 @@ function App() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector(selectIsAuthenticated);
-  const { isInitialized, status } = useAppSelector(selectApp);
+  const { isInitialized, status, error } = useAppSelector(selectApp);
 
   const theme = createTheme({
     palette: {
@@ -80,7 +80,7 @@ function App() {
           </Box>
           <Outlet />
         </Box>
-        <ErrorSnackbar />
+        {error && <ErrorSnackbar errorText={error} />}
       </ThemeProvider>
     </>
   );
