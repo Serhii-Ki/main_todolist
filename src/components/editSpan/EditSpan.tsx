@@ -2,14 +2,17 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import CustomInput from "../customInput/CustomInput.tsx";
 import CustomBtn from "../customBtn/CustomBtn.tsx";
-import { IconButton } from "@mui/material";
+import { Checkbox, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 type ModeType = "span" | "input";
 
+type ItemType = "todo" | "task";
+
 type Props = {
   title: string;
+  type: ItemType;
 };
 
 function EditSpan(props: Props) {
@@ -21,7 +24,8 @@ function EditSpan(props: Props) {
 
   if (viewMode === "span") {
     return (
-      <Box display="flex">
+      <Box display="flex" alignItems="center" gap="5px">
+        {props.type === "task" && <Checkbox />}
         <span onDoubleClick={toggleViewMode}>{props.title}</span>
         <IconButton aria-label="delete item" size="small">
           <DeleteIcon />

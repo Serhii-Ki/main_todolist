@@ -1,12 +1,15 @@
 import Box from "@mui/material/Box";
-import { Checkbox } from "@mui/material";
 import EditSpan from "../editSpan/EditSpan.tsx";
 
-function Task() {
+type Props = {
+  taskId: string;
+  title: string;
+};
+
+function Task(props: Props) {
   return (
     <Box display="flex">
-      <Checkbox />
-      <EditSpan title={"task"} />
+      <EditSpan title={props.title} type="task" />
     </Box>
   );
 }
