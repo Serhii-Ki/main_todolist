@@ -21,7 +21,7 @@ function EditSpan(props: Props) {
 
   if (viewMode === "span") {
     return (
-      <Box>
+      <Box display="flex">
         <span onDoubleClick={toggleViewMode}>{props.title}</span>
         <IconButton aria-label="delete item" size="small">
           <DeleteIcon />
