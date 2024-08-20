@@ -1,52 +1,26 @@
 import AddItemForm from "../addItemForm/AddItemForm.tsx";
 import Box from "@mui/material/Box";
 import { Paper } from "@mui/material";
-import Task from "../task/Task.tsx";
 import EditSpan from "../editSpan/EditSpan.tsx";
+import { useAppDispatch } from "../../utils/hooks/useAppDispatch.ts";
+import { useAppSelector } from "../../utils/hooks/useAppSelector.ts";
+import { selectedTasks, tasksThunks } from "../../store/tasksSlice.ts";
+import { useEffect } from "react";
 
 type Props = {
   todoId: string;
   title: string;
 };
 
-type Task = {
-  id: string;
-  title: string;
-  completed: boolean;
-};
-
-type Tasks = {
-  [key: string]: Task[];
-};
-
-const tasks: Tasks = {
-  "1": [
-    {
-      id: "1",
-      title: "Task 1",
-      completed: false,
-    },
-    {
-      id: "2",
-      title: "Task 2",
-      completed: false,
-    },
-  ],
-  "2": [
-    {
-      id: "3",
-      title: "Task 3",
-      completed: true,
-    },
-    {
-      id: "4",
-      title: "Task 4",
-      completed: false,
-    },
-  ],
-};
-
 function TodoList(props: Props) {
+  const dispatch = useAppDispatch();
+  const tasks = useAppSelector(selectedTasks);
+
+  useEffect(() => {
+    dispatch(tasksThunks.fetchTasks(props.todoId));
+  }, []);
+
+  console.log(tasks);
   return (
     <Paper sx={{ padding: "20px" }}>
       <Box display="flex" flexDirection="column" alignItems="center" gap="10px">
