@@ -3,23 +3,19 @@ import Box from "@mui/material/Box";
 import { Container, Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import TodoList from "../../components/todoList/TodoList.tsx";
-
-const todoLists = [
-  {
-    id: "1",
-    title: "First Todo List",
-  },
-  {
-    id: "2",
-    title: "Second Todo List",
-  },
-  {
-    id: "3",
-    title: "Third Todo List",
-  },
-];
+import { useAppDispatch } from "../../utils/hooks/useAppDispatch.ts";
+import { useEffect } from "react";
+import { selectTodoLists, todoListsThunks } from "../../store/todoSlice.ts";
+import { useAppSelector } from "../../utils/hooks/useAppSelector.ts";
 
 function TodoListPage() {
+  const dispatch = useAppDispatch();
+  const todoLists = useAppSelector(selectTodoLists);
+
+  useEffect(() => {
+    dispatch(todoListsThunks.fetchTodoLists());
+  }, []);
+
   return (
     <Container>
       <Box display="flex" alignItems="center" flexDirection="column" mt="50px">

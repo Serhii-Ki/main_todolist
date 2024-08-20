@@ -52,9 +52,9 @@ function TodoList(props: Props) {
       <Box display="flex" flexDirection="column" alignItems="center" gap="10px">
         <EditSpan title={props.title} type="todo" />
         <AddItemForm label={"add new task"} />
-        {tasks[props.todoId]?.map((task) => (
-          <Task key={task.id} taskId={task.id} title={task.title} />
-        ))}
+        {/*{tasks[props.todoId]?.map((task) => (*/}
+        {/*  <Task key={task.id} taskId={task.id} title={task.title} />*/}
+        {/*))}*/}
       </Box>
     </Paper>
   );
