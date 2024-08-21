@@ -1,3 +1,5 @@
+import { TodoListType } from "./mainTypes.ts";
+
 export type ResponseType<T = {}> = {
   resultCode: number;
   messages: string[];
@@ -8,4 +10,8 @@ export type LoginPayloadType = {
   email: string;
   password: string;
   rememberMe: boolean;
+};
+
+export type addTodoListResponse = {
+  item: TodoListType;
 };

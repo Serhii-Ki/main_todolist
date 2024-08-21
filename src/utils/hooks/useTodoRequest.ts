@@ -1,5 +1,6 @@
 import { useRequest } from "./useRequest.ts";
 import { TodoListType } from "../types/mainTypes.ts";
+import { addTodoListResponse, ResponseType } from "../types/requestTypes.ts";
 
 export function useTodoRequest() {
   const instance = useRequest();
@@ -8,7 +9,14 @@ export function useTodoRequest() {
     return instance.get<TodoListType[]>("/todo-lists");
   };
 
+  const addTodoList = (title: string) => {
+    return instance.post<ResponseType<addTodoListResponse>>("/todo-lists", {
+      title,
+    });
+  };
+
   return {
     getTodoLists,
+    addTodoList,
   };
 }

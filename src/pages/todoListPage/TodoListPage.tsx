@@ -16,17 +16,21 @@ function TodoListPage() {
     dispatch(todoListsThunks.fetchTodoLists());
   }, []);
 
+  const addTodoList = (title: string) => {
+    dispatch(todoListsThunks.fetchAddTodoList(title));
+  };
+
   return (
     <Container>
       <Box display="flex" alignItems="center" flexDirection="column" mt="50px">
         <Typography variant="h3" gutterBottom color="text.primary">
           Todo Lists
         </Typography>
-        <AddItemForm label={"add new list"} />
+        <AddItemForm label={"add new list"} addItem={addTodoList} />
         <Grid container spacing={2} mt="30px">
           {todoLists.map((tl) => (
             <Grid item xs={12} md={4} key={tl.id}>
-              <TodoList todoId={tl.id} title={tl.title} />
+              <TodoList todoId={tl.id} title={tl.title} filter={tl.filter} />
             </Grid>
           ))}
         </Grid>

@@ -13,6 +13,7 @@ type ItemType = "todo" | "task";
 type Props = {
   title: string;
   type: ItemType;
+  taskStatus?: number;
 };
 
 function EditSpan(props: Props) {
@@ -25,7 +26,7 @@ function EditSpan(props: Props) {
   if (viewMode === "span") {
     return (
       <Box display="flex" alignItems="center" gap="5px">
-        {props.type === "task" && <Checkbox />}
+        {props.type === "task" && <Checkbox checked={props.taskStatus === 0} />}
         <span onDoubleClick={toggleViewMode}>{props.title}</span>
         <IconButton aria-label="delete item" size="small">
           <DeleteIcon />

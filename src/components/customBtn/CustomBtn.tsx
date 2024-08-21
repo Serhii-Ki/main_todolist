@@ -5,7 +5,11 @@ type Props = {
 } & ButtonProps;
 
 function CustomButton(props: Props) {
-  return <Button {...props}>{props.title}</Button>;
+  return (
+    <Button {...props} size="small">
+      {props.title}
+    </Button>
+  );
 }
 
 export default CustomButton;

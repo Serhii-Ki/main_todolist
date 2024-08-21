@@ -6,29 +6,50 @@ import { useAppDispatch } from "../../utils/hooks/useAppDispatch.ts";
 import { useAppSelector } from "../../utils/hooks/useAppSelector.ts";
 import { selectedTasks, tasksThunks } from "../../store/tasksSlice.ts";
 import { useEffect } from "react";
+import Task from "../task/Task.tsx";
+import FilterButtons from "../filterButtons/FilterButtons.tsx";
+import { FilterType } from "../../utils/types/mainTypes.ts";
 
 type Props = {
   todoId: string;
   title: string;
+  filter: FilterType;
 };
 
-function TodoList(props: Props) {
+function TodoList({ todoId, title, filter }: Props) {
   const dispatch = useAppDispatch();
   const tasks = useAppSelector(selectedTasks);
 
   useEffect(() => {
-    dispatch(tasksThunks.fetchTasks(props.todoId));
+    dispatch(tasksThunks.fetchTasks(todoId));
   }, []);
 
-  console.log(tasks);
+  const filteredTasks = () => {
+    if (tasks[todoId]) {
+      if (filter === "active") {
+        return tasks[todoId].filter((task) => task.status !== 0);
+      } else if (filter === "completed") {
+        return tasks[todoId].filter((task) => task.status === 0);
+      }
+      return tasks[todoId];
+    }
+    return [];
+  };
+
   return (
     <Paper sx={{ padding: "20px" }}>
       <Box display="flex" flexDirection="column" alignItems="center" gap="10px">
-        <EditSpan title={props.title} type="todo" />
+        <EditSpan title={title} type="todo" />
         <AddItemForm label={"add new task"} />
-        {/*{tasks[props.todoId]?.map((task) => (*/}
-        {/*  <Task key={task.id} taskId={task.id} title={task.title} />*/}
-        {/*))}*/}
+        {filteredTasks().map((task) => (
+          <Task
+            key={task.id}
+            taskId={task.id}
+            title={task.title}
+            status={task.status}
+          />
+        ))}
+        <FilterButtons todoId={todoId} filter={filter} />
       </Box>
     </Paper>
   );
