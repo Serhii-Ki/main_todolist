@@ -64,9 +64,9 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <Box
-          height="100vh"
           display="flex"
           flexDirection="column"
+          pb="30px"
           sx={{
             backgroundColor: (theme) => theme.palette.background.default,
           }}

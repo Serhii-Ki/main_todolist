@@ -14,6 +14,7 @@ type Props = {
   title: string;
   type: ItemType;
   taskStatus?: number;
+  deleteItem?: () => void;
 };
 
 function EditSpan(props: Props) {
@@ -28,7 +29,11 @@ function EditSpan(props: Props) {
       <Box display="flex" alignItems="center" gap="5px">
         {props.type === "task" && <Checkbox checked={props.taskStatus === 0} />}
         <span onDoubleClick={toggleViewMode}>{props.title}</span>
-        <IconButton aria-label="delete item" size="small">
+        <IconButton
+          aria-label="delete item"
+          size="small"
+          onClick={props.deleteItem}
+        >
           <DeleteIcon />
         </IconButton>
         <IconButton aria-label="edit item" size="small">

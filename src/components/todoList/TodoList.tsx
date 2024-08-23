@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import Task from "../task/Task.tsx";
 import FilterButtons from "../filterButtons/FilterButtons.tsx";
 import { FilterType } from "../../utils/types/mainTypes.ts";
+import { todoListsThunks } from "../../store/todoSlice.ts";
 
 type Props = {
   todoId: string;
@@ -36,11 +37,15 @@ function TodoList({ todoId, title, filter }: Props) {
     return [];
   };
 
+  const deleteTodoList = () => {
+    dispatch(todoListsThunks.fetchDeleteTodoList(todoId));
+  };
+
   return (
     <Paper sx={{ padding: "20px" }}>
       <Box display="flex" flexDirection="column" alignItems="center" gap="10px">
-        <EditSpan title={title} type="todo" />
-        <AddItemForm label={"add new task"} />
+        <EditSpan title={title} type="todo" deleteItem={deleteTodoList} />
+        <AddItemForm label="add new task" addItem={() => {}} />
         {filteredTasks().map((task) => (
           <Task
             key={task.id}

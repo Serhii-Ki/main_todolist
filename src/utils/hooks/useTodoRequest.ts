@@ -15,8 +15,13 @@ export function useTodoRequest() {
     });
   };
 
+  const deleteTodoList = (id: string) => {
+    return instance.delete<ResponseType>(`todo-lists/${id}`);
+  };
+
   return {
     getTodoLists,
     addTodoList,
+    deleteTodoList,
   };
 }
