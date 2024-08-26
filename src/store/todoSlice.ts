@@ -6,6 +6,7 @@ import {
 } from "../utils/types/mainTypes.ts";
 import { RootState } from "./store.ts";
 import { useTodoRequest } from "../utils/hooks/useTodoRequest.ts";
+import { appActions } from "./appSlice.ts";
 
 const slice = createSlice({
   name: "todo",
@@ -26,6 +27,9 @@ const slice = createSlice({
       .addCase(fetchTodoLists.fulfilled, (_, action) => {
         return action.payload.todoLists.map((tl) => ({ ...tl, filter: "all" }));
       })
+      .addCase(fetchAddTodoList.rejected, (_, action) => {
+        console.error(action.error);
+      })
       .addCase(fetchAddTodoList.fulfilled, (state, action) => {
         state.push({ ...action.payload.todoList, filter: "all" });
       })
@@ -41,11 +45,14 @@ const slice = createSlice({
 const fetchTodoLists = createAsyncThunk<{ todoLists: TodoListType[] }, void>(
   `${slice.name}/fetchTodolists`,
   async (_, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI;
+    const { dispatch, rejectWithValue } = thunkAPI;
+    dispatch(appActions.setLoadingStatus());
     try {
       const response = await useTodoRequest().getTodoLists();
+      dispatch(appActions.setIdleStatus());
       return { todoLists: response.data };
     } catch (err) {
+      dispatch(appActions.setErrorStatus());
       return rejectWithValue(err);
     }
   },

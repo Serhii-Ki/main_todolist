@@ -11,6 +11,15 @@ const slice = createSlice({
     isInitialized: false,
   },
   reducers: {
+    setLoadingStatus: (state) => {
+      state.status = "loading";
+    },
+    setErrorStatus: (state) => {
+      state.status = "failed";
+    },
+    setIdleStatus: (state) => {
+      state.status = "idle";
+    },
     setAppInitialized: (
       state,
       action: PayloadAction<{ isInitialized: boolean }>,
